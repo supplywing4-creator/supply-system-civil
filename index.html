@@ -102,6 +102,11 @@
         .pdf-container { width: 100%; height: 100%; border: none; }
         .modal-backdrop { opacity: 0.2 !important; }
 
+        /* Style สำหรับปุ่มบวกและตัวอักษรสถานที่ */
+        .btn-add-loc { color: #28a745; cursor: pointer; font-size: 1.4rem; transition: transform 0.2s; }
+        .btn-add-loc:hover { transform: scale(1.2); }
+        .location-text { display: block; font-size: 0.9rem; color: #003399; font-weight: bold; margin-bottom: 2px; }
+
         @media (max-width: 768px) {
             .header-container { flex-direction: column; text-align: center; }
             .header-text-group { text-align: center; margin-bottom: 20px; }
@@ -191,6 +196,26 @@
     </div>
 </div>
 
+<div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px !important; height: auto !important; position: relative; top: 0; left: 0; transform: none; margin: auto;">
+        <div class="modal-content" style="height: auto !important;">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary"><i class="fa-solid fa-location-dot"></i> บันทึกสถานที่ติดตั้ง</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="height: auto !important; padding: 20px !important; overflow: visible !important;">
+                <label class="form-label fw-bold">สถานที่ติดตั้ง:</label>
+                <textarea id="locationInput" class="form-control" rows="3" placeholder="ระบุรายละเอียดสถานที่..."></textarea>
+                <input type="hidden" id="targetGlobalIndex">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" onclick="submitLocation()">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" data-bs-backdrop="false">
     <div class="modal-dialog modal-xl" id="draggableModal">
         <div class="modal-content">
@@ -215,12 +240,13 @@ let currentData = [];
 let currentPage = 1;
 let rowsPerPage = 20;
 
-// อัปเดตลิงก์ใหม่ตามที่ขอ
+// ลิงก์ล่าสุดที่คุณให้มา
 const scriptUrl = "https://script.google.com/macros/s/AKfycbzAS-OAbsv7M3QuExLljJfdqjgjxw0Jm9EqoEHleRPveOAM3bTatD1l9QvRNdu6f0Pfag/exec";
 
 function makeDraggable(el, header) {
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   header.onmousedown = (e) => {
+    if(e.target.closest('button') || e.target.closest('a')) return;
     e = e || window.event; e.preventDefault();
     pos3 = e.clientX; pos4 = e.clientY;
     document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
@@ -250,15 +276,26 @@ function renderTable() {
     const end = start + rowsPerPage;
     const paginatedData = currentData.slice(start, end);
 
-    let html = '<table id="parcelTable" class="table table-bordered table-hover shadow-sm"><thead><tr><th><input type="checkbox" class="form-check-input" id="selectAll" onclick="toggleAll(this)"></th><th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N หรือ ชย.ทอ.</th><th>ดูเอกสาร</th></tr></thead><tbody>';
+    // เพิ่มหัวข้อ "สถานที่ติดตั้ง" (สั่งข้อ 1)
+    let html = '<table id="parcelTable" class="table table-bordered table-hover shadow-sm"><thead><tr><th><input type="checkbox" class="form-check-input" id="selectAll" onclick="toggleAll(this)"></th><th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N หรือ ชย.ทอ.</th><th>ดูเอกสาร</th><th>สถานที่ติดตั้ง</th></tr></thead><tbody>';
     
     paginatedData.forEach((row, localIndex) => {
         const globalIndex = start + localIndex;
         html += `<tr><td><input type="checkbox" class="form-check-input row-checkbox" data-index="${globalIndex}"></td>`;
         for (let i = 0; i < 6; i++) { html += `<td>${row[i] || '-'}</td>`; }
+        
         let pdfLinkRaw = row[6] ? row[6].toString().trim() : '';
         let btnHtml = (pdfLinkRaw && pdfLinkRaw.includes('http')) ? `<i class="fa-solid fa-file-pdf file-icon" onclick="viewPDF('${pdfLinkRaw.replace('/view?usp=sharing', '/preview').replace('/view?usp=drive_link', '/preview')}', '${pdfLinkRaw}')"></i>` : '-';
-        html += `<td>${btnHtml}</td></tr>`;
+        html += `<td>${btnHtml}</td>`;
+        
+        // ช่องสถานที่ติดตั้ง: แสดงข้อความ + ปุ่มเครื่องหมายบวก (สั่งข้อ 1 และ 3)
+        let locText = row[7] || ""; 
+        html += `<td>
+            <div class="d-flex flex-column align-items-center">
+                <span class="location-text" id="loc-display-${globalIndex}">${locText}</span>
+                <i class="fa-solid fa-circle-plus btn-add-loc" onclick="openLocationModal(${globalIndex})"></i>
+            </div>
+        </td></tr>`;
     });
     
     html += '</tbody></table>';
@@ -271,6 +308,42 @@ function renderTable() {
     document.getElementById('pageNumbers').innerText = `หน้า ${currentPage} จาก ${totalPages || 1}`;
     document.getElementById('prevBtn').disabled = currentPage === 1;
     document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+}
+
+// ฟังก์ชันเปิด Pop-up (สั่งข้อ 1)
+function openLocationModal(index) {
+    document.getElementById('targetGlobalIndex').value = index;
+    document.getElementById('locationInput').value = currentData[index][7] || "";
+    new bootstrap.Modal(document.getElementById('locationModal')).show();
+}
+
+// ฟังก์ชันส่งข้อมูลบันทึก (สั่งข้อ 2 และ 3)
+async function submitLocation() {
+    const index = document.getElementById('targetGlobalIndex').value;
+    const locationValue = document.getElementById('locationInput').value;
+    const unitId = document.getElementById('unitSelect').value;
+    const parcelId = currentData[index][1]; // หมายเลขพัสดุ (คอลัมน์ C)
+
+    const saveBtn = document.querySelector('#locationModal .btn-primary');
+    saveBtn.disabled = true;
+    saveBtn.innerText = "กำลังบันทึก...";
+
+    try {
+        // ส่ง Action: save ไปยัง Code.gs (สั่งข้อ 2)
+        await fetch(`${scriptUrl}?action=save&unit=${unitId}&parcelId=${encodeURIComponent(parcelId)}&location=${encodeURIComponent(locationValue)}`, { mode: 'no-cors' });
+        
+        // อัปเดตข้อมูลบนหน้าเว็บทันที (สั่งข้อ 3)
+        currentData[index][7] = locationValue;
+        document.getElementById(`loc-display-${index}`).innerText = locationValue;
+        
+        bootstrap.Modal.getInstance(document.getElementById('locationModal')).hide();
+        alert("บันทึกข้อมูลเรียบร้อยแล้ว");
+    } catch (err) {
+        alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerText = "บันทึกข้อมูล";
+    }
 }
 
 async function performSearch() {
