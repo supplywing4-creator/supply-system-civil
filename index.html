@@ -102,7 +102,7 @@
         .pdf-container { width: 100%; height: 100%; border: none; }
         .modal-backdrop { opacity: 0.2 !important; }
 
-        /* Style สำหรับปุ่มบวกและตัวอักษรสถานที่ */
+        /* ส่วนเสริมสำหรับการแสดงสถานที่ติดตั้ง */
         .btn-add-loc { color: #28a745; cursor: pointer; font-size: 1.4rem; transition: transform 0.2s; }
         .btn-add-loc:hover { transform: scale(1.2); }
         .location-text { display: block; font-size: 0.9rem; color: #003399; font-weight: bold; margin-bottom: 2px; }
@@ -240,7 +240,7 @@ let currentData = [];
 let currentPage = 1;
 let rowsPerPage = 20;
 
-// ลิงก์ล่าสุดที่คุณให้มา
+// ลิงก์ Apps Script ล่าสุดที่คุณให้มา
 const scriptUrl = "https://script.google.com/macros/s/AKfycbzAS-OAbsv7M3QuExLljJfdqjgjxw0Jm9EqoEHleRPveOAM3bTatD1l9QvRNdu6f0Pfag/exec";
 
 function makeDraggable(el, header) {
@@ -276,19 +276,23 @@ function renderTable() {
     const end = start + rowsPerPage;
     const paginatedData = currentData.slice(start, end);
 
-    // เพิ่มหัวข้อ "สถานที่ติดตั้ง" (สั่งข้อ 1)
     let html = '<table id="parcelTable" class="table table-bordered table-hover shadow-sm"><thead><tr><th><input type="checkbox" class="form-check-input" id="selectAll" onclick="toggleAll(this)"></th><th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N หรือ ชย.ทอ.</th><th>ดูเอกสาร</th><th>สถานที่ติดตั้ง</th></tr></thead><tbody>';
     
     paginatedData.forEach((row, localIndex) => {
         const globalIndex = start + localIndex;
         html += `<tr><td><input type="checkbox" class="form-check-input row-checkbox" data-index="${globalIndex}"></td>`;
-        for (let i = 0; i < 6; i++) { html += `<td>${row[i] || '-'}</td>`; }
         
+        // แสดงข้อมูล คอลัมน์ 0-5 (B, C, D, F, G, H) ตามการจัดการใน Code.gs
+        for (let i = 0; i < 6; i++) { 
+            html += `<td>${row[i] || '-'}</td>`; 
+        }
+        
+        // ดูเอกสาร (ข้อมูลจาก row[6] ซึ่งคือคอลัมน์ I)
         let pdfLinkRaw = row[6] ? row[6].toString().trim() : '';
         let btnHtml = (pdfLinkRaw && pdfLinkRaw.includes('http')) ? `<i class="fa-solid fa-file-pdf file-icon" onclick="viewPDF('${pdfLinkRaw.replace('/view?usp=sharing', '/preview').replace('/view?usp=drive_link', '/preview')}', '${pdfLinkRaw}')"></i>` : '-';
         html += `<td>${btnHtml}</td>`;
         
-        // ช่องสถานที่ติดตั้ง: แสดงข้อความ + ปุ่มเครื่องหมายบวก (สั่งข้อ 1 และ 3)
+        // สถานที่ติดตั้ง (ข้อมูลจาก row[7] ซึ่งคือคอลัมน์ J)
         let locText = row[7] || ""; 
         html += `<td>
             <div class="d-flex flex-column align-items-center">
@@ -310,29 +314,27 @@ function renderTable() {
     document.getElementById('nextBtn').disabled = currentPage >= totalPages;
 }
 
-// ฟังก์ชันเปิด Pop-up (สั่งข้อ 1)
 function openLocationModal(index) {
     document.getElementById('targetGlobalIndex').value = index;
     document.getElementById('locationInput').value = currentData[index][7] || "";
     new bootstrap.Modal(document.getElementById('locationModal')).show();
 }
 
-// ฟังก์ชันส่งข้อมูลบันทึก (สั่งข้อ 2 และ 3)
 async function submitLocation() {
     const index = document.getElementById('targetGlobalIndex').value;
     const locationValue = document.getElementById('locationInput').value;
     const unitId = document.getElementById('unitSelect').value;
-    const parcelId = currentData[index][1]; // หมายเลขพัสดุ (คอลัมน์ C)
+    const parcelId = currentData[index][1]; // คอลัมน์ C (หมายเลขพัสดุ)
 
     const saveBtn = document.querySelector('#locationModal .btn-primary');
     saveBtn.disabled = true;
     saveBtn.innerText = "กำลังบันทึก...";
 
     try {
-        // ส่ง Action: save ไปยัง Code.gs (สั่งข้อ 2)
+        // ส่ง Action: save ไปยัง Code.gs
         await fetch(`${scriptUrl}?action=save&unit=${unitId}&parcelId=${encodeURIComponent(parcelId)}&location=${encodeURIComponent(locationValue)}`, { mode: 'no-cors' });
         
-        // อัปเดตข้อมูลบนหน้าเว็บทันที (สั่งข้อ 3)
+        // อัปเดตข้อมูลบนหน้าเว็บทันที
         currentData[index][7] = locationValue;
         document.getElementById(`loc-display-${index}`).innerText = locationValue;
         
