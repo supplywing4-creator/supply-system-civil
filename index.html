@@ -1,180 +1,109 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบตรวจสอบพัสดุ - สายช่างโยธา</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f4f7f6; }
-        .header { background: linear-gradient(135deg, #0044cc, #002266); color: white; padding: 40px 20px; text-align: center; margin-bottom: 30px; border-bottom: 5px solid #ffcc00; }
-        .container-card { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .btn-search { background-color: #0044cc; color: white; transition: 0.3s; }
-        .btn-search:hover { background-color: #002266; color: white; }
-        th { background-color: #0044cc !important; color: white !important; text-align: center; }
-        td { vertical-align: middle; text-align: center; }
-        .add-note-btn { color: #28a745; cursor: pointer; font-size: 1.4rem; transition: 0.2s; }
-        .add-note-btn:hover { transform: scale(1.2); color: #1e7e34; }
-        .pdf-icon { color: #dc3545; cursor: pointer; font-size: 1.4rem; }
-    </style>
+  <base target="_top">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* รักษา Style เดิมของคุณไว้ */
+    .header-box { background: #007bff; color: white; padding: 20px; text-align: center; position: relative; }
+    .logo-img { position: absolute; right: 20px; top: 10px; width: 100px; }
+    th { background-color: #004085 !important; color: white !important; text-align: center; }
+    .btn-add { color: #28a745; cursor: pointer; font-size: 1.2rem; }
+  </style>
 </head>
 <body>
 
-<div class="header">
-    <h1 class="fw-bold">ระบบตรวจสอบพัสดุสายช่างโยธา</h1>
-    <p class="mb-0">กองบิน 4 (Takhli Air Base)</p>
+<div class="header-box">
+  <h2>ระบบตรวจสอบพัสดุภายในหน่วย</h2>
+  <h4>สายช่างโยธา <i class="fa-solid fa-screwdriver-wrench"></i></h4>
+  <img src="https://lh3.googleusercontent.com/d/1WXw920em0NyiUIofpUZcAoV80yc_sge8" class="logo-img">
 </div>
 
-<div class="container">
-    <div class="container-card">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">เลือกหน่วยงาน</label>
-                <select id="unitSelect" class="form-select">
-                    <option value="1">ฝคก.บน.4</option>
-                    <option value="2">ฝูง.401 บน.4</option>
-                    <option value="3">ฝูง.402 บน.4</option>
-                    <option value="4">ฝูง.403 บน.4</option>
-                    <option value="5">บก.บน.4</option>
-                    <option value="6">พัน.อย.บน.4</option>
-                    <option value="7">ผพธ.บน.4</option>
-                    <option value="8">มว.บชพ.กทน.บน.4</option>
-                    <option value="9">ผชอ.กทน.บน.4</option>
-                    <option value="10">ผสอ.กทน.บน.4</option>
-                    <option value="11">ผสพ.กทน.บน.4</option>
-                    <option value="12">ผชย.บน.4</option>
-                    <option value="13">ผขส.บน.4</option>
-                    <option value="14">รพ.กองบิน บน.4</option>
-                    <option value="15">ผสก.บน.4</option>
-                    <option value="16">ร้อย.ทสห.บน.4</option>
-                    <option value="17">ผกง.บน.4</option>
-                    <option value="18">ผนบ.บน.4</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">ประเภท</label>
-                <select id="typeSelect" class="form-select">
-                    <option value="AIR">เครื่องปรับอากาศ</option>
-                    <option value="OTHER">อื่นๆ</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button onclick="performSearch()" class="btn btn-search w-100 fw-bold">ค้นหา</button>
-            </div>
-        </div>
-
-        <div id="loading" class="text-center my-5 d-none">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">กำลังดึงข้อมูลจากระบบ...</p>
-        </div>
-
-        <div id="resultArea" class="table-responsive mt-4"></div>
+<div class="container mt-4">
+  <div class="card p-3 shadow-sm">
+    <div class="row">
+      <div class="col-md-5">
+        <label>เลือกหน่วยงาน</label>
+        <select id="unitSelect" class="form-select">
+          <option value="1">ฝคก.บน.4</option>
+          </select>
+      </div>
+      <div class="col-md-5">
+        <label>เลือกประเภทพัสดุ</label>
+        <select id="typeSelect" class="form-select">
+          <option value="AIR">เครื่องปรับอากาศ</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button onclick="performSearch()" class="btn btn-primary w-100">ค้นหา</button>
+      </div>
     </div>
+  </div>
+
+  <div id="resultArea" class="mt-4"></div>
 </div>
 
-<div class="modal fade" id="noteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fa-solid fa-pen-to-square me-2"></i>ระบุสถานที่ติดตั้ง</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p id="targetParcel" class="fw-bold text-primary mb-2"></p>
-                <textarea id="locationInput" class="form-control" rows="4" placeholder="กรอกสถานที่ติดตั้ง เช่น อาคาร... ชั้น..."></textarea>
-                <input type="hidden" id="currentRowIndex">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                <button type="button" class="btn btn-success" onclick="saveLocation()">บันทึกข้อมูล</button>
-            </div>
-        </div>
+<div class="modal fade" id="noteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header"><h5>บันทึกสถานที่ติดตั้ง</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <textarea id="locationInput" class="form-control" rows="3" placeholder="ระบุสถานที่..."></textarea>
+        <input type="hidden" id="currentRowIndex">
+      </div>
+      <div class="modal-footer"><button onclick="saveLocation()" class="btn btn-success">บันทึก</button></div>
     </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-let currentData = [];
-// ลิงก์ล่าสุดที่คุณให้มา
-const scriptUrl = "https://script.google.com/macros/s/AKfycbzp9h4WvzztjUElzry14Fo6DyoI1QpNf5rwQrkz4R9wEFMSV7aV6vtrINiNd3PXHBTbzQ/exec";
+  let currentData = [];
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbzp9h4WvzztjUElzry14Fo6DyoI1QpNf5rwQrkz4R9wEFMSV7aV6vtrINiNd3PXHBTbzQ/exec";
 
-async function performSearch() {
+  async function performSearch() {
     const unit = document.getElementById('unitSelect').value;
-    const loading = document.getElementById('loading');
     const resultArea = document.getElementById('resultArea');
+    resultArea.innerHTML = "กำลังดึงข้อมูล...";
     
-    loading.classList.remove('d-none');
-    resultArea.innerHTML = '';
-
     try {
-        const response = await fetch(`${scriptUrl}?unit=${unit}`);
-        currentData = await response.json();
-        
-        loading.classList.add('d-none');
-        if (currentData.length === 0) {
-            resultArea.innerHTML = '<div class="alert alert-warning text-center">ไม่พบข้อมูลพัสดุในหน่วยงานนี้</div>';
-            return;
-        }
-        renderTable();
-    } catch (err) {
-        loading.classList.add('d-none');
-        resultArea.innerHTML = '<div class="alert alert-danger text-center">เชื่อมต่อระบบล้มเหลว: ' + err.message + '</div>';
-    }
-}
+      const resp = await fetch(`${scriptUrl}?unit=${unit}`);
+      currentData = await resp.json();
+      renderTable();
+    } catch (e) { resultArea.innerHTML = "ข้อผิดพลาด: Failed to fetch"; }
+  }
 
-function renderTable() {
-    let html = '<table class="table table-bordered table-hover shadow-sm"><thead><tr>';
-    html += '<th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N</th><th>เอกสาร</th><th>สถานที่ติดตั้ง</th>';
-    html += '</tr></thead><tbody>';
+  function renderTable() {
+    let html = '<table class="table table-bordered shadow-sm"><thead><tr>';
+    html += '<th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N</th><th>ดูเอกสาร</th><th>สถานที่ติดตั้ง</th></tr></thead><tbody>';
     
     currentData.forEach((row, index) => {
-        const pdfLink = row[6] ? `<i class="fa-solid fa-file-pdf pdf-icon" onclick="window.open('${row[6]}', '_blank')"></i>` : '-';
-        html += `<tr>
-            <td>${row[0]}</td>
-            <td class="fw-bold">${row[1]}</td>
-            <td>${row[2]}</td>
-            <td>${row[3]}</td>
-            <td>${row[4]}</td>
-            <td>${row[5] || '-'}</td>
-            <td>${pdfLink}</td>
-            <td><i class="fa-solid fa-circle-plus add-note-btn" onclick="openNoteModal(${index})"></i></td>
-        </tr>`;
+      html += `<tr>
+        <td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td><td>${row[5]}</td>
+        <td class="text-center"><a href="${row[6]}" target="_blank"><i class="fa-solid fa-file-pdf text-danger"></i></a></td>
+        <td class="text-center"><i class="fa-solid fa-circle-plus btn-add" onclick="openModal(${index})"></i></td>
+      </tr>`;
     });
-    
     document.getElementById('resultArea').innerHTML = html + '</tbody></table>';
-}
+  }
 
-function openNoteModal(index) {
-    const row = currentData[index];
+  function openModal(index) {
     document.getElementById('currentRowIndex').value = index;
-    document.getElementById('targetParcel').innerText = "พัสดุ: " + row[2];
-    document.getElementById('locationInput').value = "";
     new bootstrap.Modal(document.getElementById('noteModal')).show();
-}
+  }
 
-async function saveLocation() {
-    const index = document.getElementById('currentRowIndex').value;
-    const location = document.getElementById('locationInput').value;
+  async function saveLocation() {
+    const idx = document.getElementById('currentRowIndex').value;
+    const loc = document.getElementById('locationInput').value;
     const unit = document.getElementById('unitSelect').value;
-    const parcelId = currentData[index][1];
+    const pId = currentData[idx][1];
 
-    if (!location.trim()) {
-        alert("กรุณากรอกข้อมูลสถานที่");
-        return;
-    }
-
-    const saveUrl = `${scriptUrl}?action=save&unit=${unit}&parcelId=${encodeURIComponent(parcelId)}&location=${encodeURIComponent(location)}`;
-
-    try {
-        // ใช้ no-cors เพราะเป็นการส่งคำสั่งผ่าน URL ไปยัง Google Apps Script จาก Domain อื่น (GitHub)
-        await fetch(saveUrl, { mode: 'no-cors' });
-        alert("ส่งข้อมูลบันทึกสำเร็จ! (กรุณาตรวจสอบในไฟล์ Google Sheets คอลัมน์ J)");
-        bootstrap.Modal.getInstance(document.getElementById('noteModal')).hide();
-    } catch (err) {
-        alert("เกิดข้อผิดพลาดในการบันทึก: " + err.message);
-    }
-}
+    // ส่งข้อมูลไปบันทึก
+    fetch(`${scriptUrl}?action=save&unit=${unit}&parcelId=${encodeURIComponent(pId)}&location=${encodeURIComponent(loc)}`, { mode: 'no-cors' });
+    alert("ส่งข้อมูลบันทึกแล้ว");
+    bootstrap.Modal.getInstance(document.getElementById('noteModal')).hide();
+  }
 </script>
 </body>
 </html>
