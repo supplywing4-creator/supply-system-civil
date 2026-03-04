@@ -1,109 +1,333 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <base target="_top">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    /* รักษา Style เดิมของคุณไว้ */
-    .header-box { background: #007bff; color: white; padding: 20px; text-align: center; position: relative; }
-    .logo-img { position: absolute; right: 20px; top: 10px; width: 100px; }
-    th { background-color: #004085 !important; color: white !important; text-align: center; }
-    .btn-add { color: #28a745; cursor: pointer; font-size: 1.2rem; }
-  </style>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Sarabun', 'TH Sarabun New', 'TH Sarabun PSK', sans-serif; 
+            background-color: #f0f7ff;
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://lh3.googleusercontent.com/d/1UzujxL1lcyGZEA3uB85zz48CUPmG1j5Q'); 
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            backdrop-filter: brightness(0.9); 
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* ปรับ Header ใหม่เพื่อล็อคตำแหน่ง */
+        .header-box { 
+            background: linear-gradient(135deg, #003399, #0066cc, #0099ff); 
+            color: white; 
+            padding: 40px 0; 
+            border-bottom: 5px solid #ffcc00; 
+            display: flex;
+            justify-content: center; /* จัดเนื้อหาไว้กึ่งกลางจอ */
+            align-items: center;
+            min-height: 250px;
+        }
+
+        .header-container {
+            width: 95%;
+            max-width: 1200px; /* ล็อคความกว้างสูงสุดเพื่อให้ทุกเครื่องดูเหมือนกัน */
+            display: flex;
+            justify-content: space-between; /* แยกข้อความไว้ซ้าย โลโก้ไว้ขวา */
+            align-items: center;
+            position: relative;
+        }
+
+        .header-text-group {
+            flex: 1;
+            text-align: left;
+            z-index: 5;
+        }
+        
+        .header-title-left {
+            font-size: clamp(1.8rem, 4vw, 3.5rem); /* ปรับขนาดตามจอแต่มีขอบเขต */
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+
+        .sub-title-civil {
+            font-size: clamp(1.5rem, 3.5vw, 3rem);
+            font-weight: bold;
+            color: #FFB347; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+            margin-top: 10px;
+            display: block;
+        }
+        
+        .logo-wrapper {
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+
+        .logo { 
+            max-width: clamp(120px, 15vw, 204px); 
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.3)); 
+        }
+
+        /* --- ส่วนอื่นๆ คงเดิมตามสั่ง --- */
+        .search-container { 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
+            margin-top: -30px; /* ให้กล่องค้นหาเกยขึ้นไปบน Header เล็กน้อยเพื่อความสวยงาม */
+            position: relative;
+            z-index: 10;
+        }
+
+        .pagination-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; background: white; padding: 10px; border-radius: 8px; }
+        #excelBtnWrapper { display: none; }
+        .btn-search { background-color: #0056b3; color: white; border: none; }
+        .btn-refresh { background-color: #28a745; color: white; border: none; }
+        .btn-excel { background-color: #1d6f42; color: white; border: none; font-size: 0.9rem; padding: 5px 15px; border-radius: 5px; }
+        .file-icon { color: #dc3545; font-size: 1.6rem; cursor: pointer; transition: transform 0.2s; }
+        .file-icon:hover { transform: scale(1.2); color: #a71d2a; }
+        
+        th { background-color: #003399 !important; color: white !important; text-align: center !important; vertical-align: middle !important; white-space: nowrap; font-size: 1.2rem; }
+        td { text-align: center !important; vertical-align: middle !important; font-size: 1.1rem; background-color: rgba(255,255,255,0.85) !important; }
+        
+        .modal-dialog { max-width: 90% !important; margin: 0; position: absolute; top: 50px; left: 50%; transform: translateX(-50%); }
+        .modal-header { cursor: move; background-color: #f8f9fa; user-select: none; }
+        .modal-content { height: 80vh; border: 2px solid #0066cc; }
+        .modal-body { flex: 1; padding: 0; overflow: hidden; height: calc(100% - 60px); }
+        .pdf-container { width: 100%; height: 100%; border: none; }
+        .modal-backdrop { opacity: 0.2 !important; }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; text-align: center; }
+            .header-text-group { text-align: center; margin-bottom: 20px; }
+            .logo-wrapper { margin-left: 0; }
+            .search-container { margin-top: 20px; }
+        }
+    </style>
 </head>
 <body>
 
 <div class="header-box">
-  <h2>ระบบตรวจสอบพัสดุภายในหน่วย</h2>
-  <h4>สายช่างโยธา <i class="fa-solid fa-screwdriver-wrench"></i></h4>
-  <img src="https://lh3.googleusercontent.com/d/1WXw920em0NyiUIofpUZcAoV80yc_sge8" class="logo-img">
-</div>
-
-<div class="container mt-4">
-  <div class="card p-3 shadow-sm">
-    <div class="row">
-      <div class="col-md-5">
-        <label>เลือกหน่วยงาน</label>
-        <select id="unitSelect" class="form-select">
-          <option value="1">ฝคก.บน.4</option>
-          </select>
-      </div>
-      <div class="col-md-5">
-        <label>เลือกประเภทพัสดุ</label>
-        <select id="typeSelect" class="form-select">
-          <option value="AIR">เครื่องปรับอากาศ</option>
-        </select>
-      </div>
-      <div class="col-md-2 d-flex align-items-end">
-        <button onclick="performSearch()" class="btn btn-primary w-100">ค้นหา</button>
-      </div>
+    <div class="header-container">
+        <div class="header-text-group">
+            <div class="header-title-left">ระบบตรวจสอบพัสดุภายในหน่วย</div>
+            <div class="sub-title-civil">สายช่างโยธา <i class="fa-solid fa-screwdriver-wrench"></i></div>
+        </div>
+        <div class="logo-wrapper">
+            <img src="https://drive.google.com/thumbnail?id=1WXw920em0NyiUIofpUZcAoV80yc_sge8&sz=w500" class="logo" alt="Logo">
+        </div>
     </div>
-  </div>
-
-  <div id="resultArea" class="mt-4"></div>
 </div>
 
-<div class="modal fade" id="noteModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header"><h5>บันทึกสถานที่ติดตั้ง</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-      <div class="modal-body">
-        <textarea id="locationInput" class="form-control" rows="3" placeholder="ระบุสถานที่..."></textarea>
-        <input type="hidden" id="currentRowIndex">
-      </div>
-      <div class="modal-footer"><button onclick="saveLocation()" class="btn btn-success">บันทึก</button></div>
+<div class="container mb-5">
+    <div class="search-container no-print">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">เลือกหน่วยงาน</label>
+                <select id="unitSelect" class="form-select">
+                    <option value="1">ฝคก.บน.4</option>
+                    <option value="2">ฝูง.401 บน.4</option>
+                    <option value="3">ฝูง.402 บน.4</option>
+                    <option value="4">ฝูง.403 บน.4</option>
+                    <option value="5">บก.บน.4</option>
+                    <option value="6">พัน.อย.บน.4</option>
+                    <option value="7">ผพธ.บน.4</option>
+                    <option value="8">มว.บชพ.กทน.บน.4</option>
+                    <option value="9">ผชอ.กทน.บน.4</option>
+                    <option value="10">ผสอ.กทน.บน.4</option>
+                    <option value="11">ผสพ.กทน.บน.4</option>
+                    <option value="12">ผชย.บน.4</option>
+                    <option value="13">ผขส.บน.4</option>
+                    <option value="14">รพ.กองบิน บน.4</option>
+                    <option value="15">ผสก.บน.4</option>
+                    <option value="16">ร้อย.ทสห.บน.4</option>
+                    <option value="17">ผกง.บน.4</option>
+                    <option value="18">ผนบ.บน.4</option>
+                </select>
+                <div class="mt-2" id="excelBtnWrapper">
+                    <button onclick="exportToExcel()" class="btn btn-excel fw-bold">
+                        <i class="fa-solid fa-file-excel"></i> ดาวน์โหลด Excel
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">เลือกประเภทพัสดุ</label>
+                <select id="searchInput" class="form-select">
+                    <option value="AIR">เครื่องปรับอากาศ</option>
+                    <option value="OTHER">อื่นๆ</option>
+                </select>
+            </div>
+            <div class="col-12 text-center mt-3 border-top pt-3">
+                <button onclick="performSearch()" class="btn btn-search px-5 py-2 fw-bold">ค้นหา</button>
+                <button onclick="performSearch()" class="btn btn-refresh px-5 py-2 fw-bold ms-2">รีเฟรชข้อมูล</button>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div id="paginationTop" class="mt-4 d-flex justify-content-between align-items-center" style="display:none !important;">
+        <div>
+            <span class="fw-bold">แสดงหน้าละ:</span>
+            <select id="rowsPerPage" class="form-select d-inline-block w-auto ms-2" onchange="changeRowsPerPage()">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="all">แสดงทั้งหมด</option>
+            </select>
+            <span class="ms-2" id="totalItemsText"></span>
+        </div>
+    </div>
+
+    <div id="resultArea" class="table-responsive mt-2"></div>
+    
+    <div id="paginationBottom" class="pagination-controls" style="display:none;">
+        <button class="btn btn-outline-primary btn-sm" id="prevBtn" onclick="prevPage()">ก่อนหน้า</button>
+        <div id="pageNumbers"></div>
+        <button class="btn btn-outline-primary btn-sm" id="nextBtn" onclick="nextPage()">ถัดไป</button>
+    </div>
 </div>
 
+<div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" data-bs-backdrop="false">
+    <div class="modal-dialog modal-xl" id="draggableModal">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center" id="modalHeader">
+                <h5 class="modal-title"><i class="fa-solid fa-file-lines"></i> เอกสารพัสดุ (PDF)</h5>
+                <div>
+                    <a id="pdfDownloadBtn" href="#" target="_blank" class="btn btn-danger btn-sm me-2"><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfViewer" class="pdf-container"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  let currentData = [];
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbzp9h4WvzztjUElzry14Fo6DyoI1QpNf5rwQrkz4R9wEFMSV7aV6vtrINiNd3PXHBTbzQ/exec";
+let currentData = [];
+let currentPage = 1;
+let rowsPerPage = 20;
 
-  async function performSearch() {
-    const unit = document.getElementById('unitSelect').value;
+function makeDraggable(el, header) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  header.onmousedown = (e) => {
+    e = e || window.event; e.preventDefault();
+    pos3 = e.clientX; pos4 = e.clientY;
+    document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+    document.onmousemove = (e) => {
+      e = e || window.event; e.preventDefault();
+      pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+      pos3 = e.clientX; pos4 = e.clientY;
+      el.style.top = (el.offsetTop - pos2) + "px"; el.style.left = (el.offsetLeft - pos1) + "px"; el.style.transform = "none";
+    };
+  };
+}
+window.onload = () => makeDraggable(document.getElementById("draggableModal"), document.getElementById("modalHeader"));
+
+function changeRowsPerPage() {
+    const val = document.getElementById('rowsPerPage').value;
+    rowsPerPage = (val === "all") ? currentData.length : parseInt(val);
+    currentPage = 1;
+    renderTable();
+}
+
+function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
+function nextPage() { if (currentPage * rowsPerPage < currentData.length) { currentPage++; renderTable(); } }
+
+function renderTable() {
     const resultArea = document.getElementById('resultArea');
-    resultArea.innerHTML = "กำลังดึงข้อมูล...";
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const paginatedData = currentData.slice(start, end);
+
+    let html = '<table id="parcelTable" class="table table-bordered table-hover shadow-sm"><thead><tr><th><input type="checkbox" class="form-check-input" id="selectAll" onclick="toggleAll(this)"></th><th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N หรือ ชย.ทอ.</th><th>ดูเอกสาร</th></tr></thead><tbody>';
+    
+    paginatedData.forEach((row, localIndex) => {
+        const globalIndex = start + localIndex;
+        html += `<tr><td><input type="checkbox" class="form-check-input row-checkbox" data-index="${globalIndex}"></td>`;
+        for (let i = 0; i < 6; i++) { html += `<td>${row[i] || '-'}</td>`; }
+        let pdfLinkRaw = row[6] ? row[6].toString().trim() : '';
+        let btnHtml = (pdfLinkRaw && pdfLinkRaw.includes('http')) ? `<i class="fa-solid fa-file-pdf file-icon" onclick="viewPDF('${pdfLinkRaw.replace('/view?usp=sharing', '/preview').replace('/view?usp=drive_link', '/preview')}', '${pdfLinkRaw}')"></i>` : '-';
+        html += `<td>${btnHtml}</td></tr>`;
+    });
+    
+    html += '</tbody></table>';
+    resultArea.innerHTML = html;
+    
+    document.getElementById('paginationTop').style.setProperty('display', 'flex', 'important');
+    document.getElementById('paginationBottom').style.display = 'flex';
+    document.getElementById('totalItemsText').innerText = `จากทั้งหมด ${currentData.length} รายการ`;
+    const totalPages = Math.ceil(currentData.length / rowsPerPage);
+    document.getElementById('pageNumbers').innerText = `หน้า ${currentPage} จาก ${totalPages || 1}`;
+    document.getElementById('prevBtn').disabled = currentPage === 1;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+}
+
+async function performSearch() {
+    const unit = document.getElementById('unitSelect').value;
+    const typeValue = document.getElementById('searchInput').value; 
+    const resultArea = document.getElementById('resultArea');
+    
+    if (typeValue === "OTHER") {
+        resultArea.innerHTML = '<div class="alert alert-warning text-center">⚠️ ไม่พบข้อมูล</div>';
+        document.getElementById('paginationTop').style.setProperty('display', 'none', 'important');
+        document.getElementById('paginationBottom').style.display = 'none';
+        document.getElementById('excelBtnWrapper').style.display = 'none';
+        return;
+    }
+
+    resultArea.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-primary"></div><br><br>กำลังดึงข้อมูล...</div>';
     
     try {
-      const resp = await fetch(`${scriptUrl}?unit=${unit}`);
-      currentData = await resp.json();
-      renderTable();
-    } catch (e) { resultArea.innerHTML = "ข้อผิดพลาด: Failed to fetch"; }
-  }
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbzp9h4WvzztjUElzry14Fo6DyoI1QpNf5rwQrkz4R9wEFMSV7aV6vtrINiNd3PXHBTbzQ/exec?unit=${unit}&search=`);
+        currentData = await response.json();
+        
+        if (!currentData || currentData.length === 0) {
+            resultArea.innerHTML = '<div class="alert alert-warning text-center">⚠️ ไม่พบข้อมูล</div>';
+            document.getElementById('paginationTop').style.setProperty('display', 'none', 'important');
+            document.getElementById('paginationBottom').style.display = 'none';
+            return;
+        }
+        
+        document.getElementById('excelBtnWrapper').style.display = 'block';
+        const currentRowsVal = document.getElementById('rowsPerPage').value;
+        rowsPerPage = (currentRowsVal === "all") ? currentData.length : parseInt(currentRowsVal);
+        currentPage = 1;
+        renderTable();
+    } catch (err) { 
+        resultArea.innerHTML = '<div class="alert alert-danger text-center">❌ ข้อผิดพลาด: ' + err.message + '</div>';
+    }
+}
 
-  function renderTable() {
-    let html = '<table class="table table-bordered shadow-sm"><thead><tr>';
-    html += '<th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N</th><th>ดูเอกสาร</th><th>สถานที่ติดตั้ง</th></tr></thead><tbody>';
-    
-    currentData.forEach((row, index) => {
-      html += `<tr>
-        <td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td><td>${row[5]}</td>
-        <td class="text-center"><a href="${row[6]}" target="_blank"><i class="fa-solid fa-file-pdf text-danger"></i></a></td>
-        <td class="text-center"><i class="fa-solid fa-circle-plus btn-add" onclick="openModal(${index})"></i></td>
-      </tr>`;
-    });
-    document.getElementById('resultArea').innerHTML = html + '</tbody></table>';
-  }
+function toggleAll(source) { document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = source.checked); }
 
-  function openModal(index) {
-    document.getElementById('currentRowIndex').value = index;
-    new bootstrap.Modal(document.getElementById('noteModal')).show();
-  }
+function exportToExcel() {
+    if (currentData.length === 0) return;
+    const checkboxes = document.querySelectorAll('.row-checkbox');
+    let exportData = [];
+    checkboxes.forEach((cb) => { if (cb.checked) exportData.push(currentData[cb.getAttribute('data-index')].slice(0, 6)); });
+    if (exportData.length === 0) exportData = currentData.map(row => row.slice(0, 6));
+    const ws = XLSX.utils.aoa_to_sheet([["หน่วยงาน", "หมายเลขพัสดุ", "ชื่อพัสดุ", "จำนวน", "หน่วยนับ", "S/N หรือ ชย.ทอ."], ...exportData]);
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ParcelData");
+    XLSX.writeFile(wb, "รายการพัสดุ.xlsx");
+}
 
-  async function saveLocation() {
-    const idx = document.getElementById('currentRowIndex').value;
-    const loc = document.getElementById('locationInput').value;
-    const unit = document.getElementById('unitSelect').value;
-    const pId = currentData[idx][1];
-
-    // ส่งข้อมูลไปบันทึก
-    fetch(`${scriptUrl}?action=save&unit=${unit}&parcelId=${encodeURIComponent(pId)}&location=${encodeURIComponent(loc)}`, { mode: 'no-cors' });
-    alert("ส่งข้อมูลบันทึกแล้ว");
-    bootstrap.Modal.getInstance(document.getElementById('noteModal')).hide();
-  }
+function viewPDF(previewLink, downloadLink) {
+    document.getElementById('pdfViewer').src = previewLink;
+    document.getElementById('pdfDownloadBtn').href = downloadLink;
+    const modalDiag = document.getElementById("draggableModal");
+    modalDiag.style.top = (window.scrollY + 50) + "px"; modalDiag.style.left = "50%"; modalDiag.style.transform = "translateX(-50%)";
+    new bootstrap.Modal(document.getElementById('pdfModal')).show();
+}
 </script>
 </body>
 </html>
