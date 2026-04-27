@@ -285,12 +285,21 @@ function renderTable() {
     const end = start + rowsPerPage;
     const paginatedData = currentData.slice(start, end);
 
+    // ดึงชื่อหน่วยงานจาก Dropdown ที่เลือก
+    const unitSelect = document.getElementById('unitSelect');
+    const selectedUnitName = unitSelect.options[unitSelect.selectedIndex].text;
+
     let html = '<table id="parcelTable" class="table table-bordered table-hover shadow-sm"><thead><tr><th><input type="checkbox" class="form-check-input" id="selectAll" onclick="toggleAll(this)"></th><th>หน่วยงาน</th><th>หมายเลขพัสดุ</th><th>ชื่อพัสดุ</th><th>จำนวน</th><th>หน่วยนับ</th><th>S/N หรือ ชย.ทอ.</th><th>ดูเอกสาร</th><th>สถานที่ติดตั้ง</th></tr></thead><tbody>';
     
     paginatedData.forEach((row, localIndex) => {
         const globalIndex = start + localIndex;
         html += `<tr><td><input type="checkbox" class="form-check-input row-checkbox" data-index="${globalIndex}"></td>`;
-        for (let i = 0; i < 6; i++) { html += `<td>${row[i] || '-'}</td>`; }
+        
+        // แสดงชื่อหน่วยงานที่เลือกแทนข้อมูลจาก Sheet
+        html += `<td>${selectedUnitName}</td>`;
+        
+        // วนลูปแสดงข้อมูลพัสดุ (เริ่มที่ index 1 เพื่อข้ามคอลัมน์หน่วยงานเดิม)
+        for (let i = 1; i < 6; i++) { html += `<td>${row[i] || '-'}</td>`; }
         
         let pdfLinkRaw = row[6] ? row[6].toString().trim() : '';
         let btnHtml = (pdfLinkRaw && pdfLinkRaw.includes('http')) ? `<i class="fa-solid fa-file-pdf file-icon" onclick="viewPDF('${pdfLinkRaw.replace('/view?usp=sharing', '/preview').replace('/view?usp=drive_link', '/preview')}', '${pdfLinkRaw}')"></i>` : '-';
