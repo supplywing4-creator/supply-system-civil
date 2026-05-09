@@ -89,6 +89,54 @@
         .line-join-box { margin-top: 15px; }
         .line-qr-image { width: 90px; height: 90px; border-radius: 10px; background: white; padding: 5px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
+        /* 📣 กล่องประกาศ (Announcement Box) */
+        .announcement-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 320px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1.5px solid rgba(255, 176, 58, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            font-family: 'Sarabun', sans-serif;
+            z-index: 999;
+        }
+        .announcement-header {
+            color: #FFB03A;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #announce-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .announce-item {
+            color: #E2E8F0;
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.2s;
+            display: block;
+            border-left: 3px solid #FFB03A;
+            line-height: 1.4;
+        }
+        .announce-item:hover {
+            background: rgba(255, 176, 58, 0.15);
+            transform: translateX(5px);
+            color: #FFFFFF;
+        }
+
         /* เครดิต */
         .developer-credit { position: absolute; bottom: 20px; right: 25px; font-family: 'Sarabun', sans-serif; font-size: 1.1rem; color: rgba(255,255,255,0.4); user-select: none; }
 
@@ -97,6 +145,7 @@
             .vertical-divider { width: 80%; height: 2px; min-height: auto; }
             .right-side-container { align-items: center; text-align: center; }
             .contact-box { display: flex; flex-direction: column; align-items: center; }
+            .announcement-container { position: relative; left: 0; bottom: 0; width: 100%; max-width: 350px; margin: 20px auto; }
         }
     </style>
 </head>
@@ -143,7 +192,50 @@
         </div>
     </div>
 
-    <div class="developer-credit">จัดทำโดย จ.ท.นิรันดร์ ศรีนาม </div>
+    <div class="announcement-container">
+        <div class="announcement-header">
+            <i class="fa-solid fa-bullhorn"></i> ประชาสัมพันธ์ล่าสุด
+        </div>
+        <div id="announce-list">
+            <div style="color: #64748b; font-size: 0.85rem;">กำลังโหลดข้อมูล...</div>
+        </div>
+    </div>
 
+    <div class="developer-credit">จัดทำโดย จ.ท.นิรันดร์ ศรีนาม</div>
+
+    <script>
+        // 🔗 วางลิงก์ Web App (ที่ลงท้ายด้วย /exec) ของคุณที่นี่
+        const API_URL = "https://script.google.com/macros/s/AKfycbxvzrm83iqAPP8PcoxubPQpLksI0U2Tdw5b3qZ2aVM5Iuod16XlRlNZP6Sv_1oXn884/exec"; 
+
+        async function loadAnnouncements() {
+            const list = document.getElementById('announce-list');
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<div style="color: #64748b; font-size: 0.85rem;">ไม่มีประกาศในขณะนี้</div>';
+                    return;
+                }
+
+                list.innerHTML = ''; // ล้างข้อความกำลังโหลด
+                data.forEach(item => {
+                    const a = document.createElement('a');
+                    a.className = 'announce-item';
+                    a.href = item.link || '#';
+                    a.target = '_blank'; // 🌟 เงื่อนไข: ให้เด้งขึ้นลิงก์ใหม่
+                    a.innerHTML = item.title;
+                    list.appendChild(a);
+                });
+
+            } catch (err) {
+                console.error("Fetch Error:", err);
+                list.innerHTML = '<div style="color: #ef4444; font-size: 0.85rem;">ไม่สามารถเชื่อมต่อข้อมูลได้</div>';
+            }
+        }
+
+        // เรียกใช้งานเมื่อโหลดหน้าเว็บ
+        window.onload = loadAnnouncements;
+    </script>
 </body>
 </html>
