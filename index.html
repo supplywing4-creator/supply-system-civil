@@ -6,7 +6,7 @@
     <title>ระบบพัสดุภายในหน่วย - สายงานช่างโยธา</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 🎨 Theme: Navy & Blue */
+        /* 🎨 Theme เดิมคงไว้ */
         html { font-size: 16px; }
         body {
             margin: 0;
@@ -26,6 +26,9 @@
         @keyframes slideFromBottom { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
         @keyframes growVertical { 0% { opacity: 0; transform: scaleY(0); } 100% { opacity: 1; transform: scaleY(1); } }
         @keyframes fadeInRoof { 0% { opacity: 0; transform: scaleX(0.5); } 100% { opacity: 1; transform: scaleX(1); } }
+        
+        /* Animation สำหรับไอคอน NEW */
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         /* 🛠️ Main Layout */
         .main-wrapper {
@@ -41,31 +44,10 @@
             margin-bottom: 50px;
         }
 
-        /* 🏠 หลังคาคลังพัสดุรูปสามเหลี่ยม */
-        .warehouse-roof-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2px;
-            animation: fadeInRoof 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .warehouse-roof {
-            width: 100px;
-            height: 14px;
-            background: #FFB03A;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
+        .warehouse-roof-container { width: 100%; display: flex; justify-content: center; margin-bottom: 2px; animation: fadeInRoof 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .warehouse-roof { width: 100px; height: 14px; background: #FFB03A; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
 
-        /* ฝั่งซ้าย */
-        .content-group-left {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            flex: 1.3; 
-            min-width: 0;
-            animation: slideFromRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .content-group-left { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1.3; min-width: 0; animation: slideFromRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .main-title { font-family: 'Sarabun', sans-serif; font-size: 3.8rem; font-weight: bold; color: #FFFFFF; line-height: 1.1; width: 100%; }
         .sub-title { font-family: 'Sarabun', sans-serif; font-size: 2.2rem; color: #FFB03A; margin-top: 8px; display: flex; align-items: center; gap: 12px; }
 
@@ -76,10 +58,8 @@
         .menu-link:active { transform: translateY(0px); box-shadow: 0 1px 0 #000, 0 3px 8px rgba(0, 0, 0, 0.3); }
         .menu-link.menu-2 { cursor: not-allowed; filter: grayscale(50%) opacity(0.7); }
 
-        /* เส้นแบ่ง */
         .vertical-divider { width: 2px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent); align-self: stretch; min-height: 300px; animation: growVertical 1s ease-in-out forwards; }
 
-        /* ฝั่งขวา */
         .right-side-container { display: flex; flex-direction: column; align-items: flex-start; flex: 1; min-width: 350px; animation: slideFromBottom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .logo-right img { width: 220px; height: auto; margin-bottom: 20px; }
         .contact-box { font-family: 'Sarabun', sans-serif; color: #FFFFFF; }
@@ -89,69 +69,80 @@
         .line-join-box { margin-top: 15px; }
         .line-qr-image { width: 90px; height: 90px; border-radius: 10px; background: white; padding: 5px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-        /* 📣 กล่องประกาศ (Announcement Box) */
-        .announcement-container {
+        /* 📣 ใหม่: ประชาสัมพันธ์แบบข้อความลอยตัว (Floating Text) */
+        .announcement-wrapper {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 320px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1.5px solid rgba(255, 176, 58, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            font-family: 'Sarabun', sans-serif;
+            bottom: 30px;
+            left: 30px;
             z-index: 999;
+            font-family: 'Sarabun', sans-serif;
+            max-width: 400px;
         }
         .announcement-header {
             color: #FFB03A;
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 8px;
+            opacity: 0.8;
         }
         #announce-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            max-height: 180px;
-            overflow-y: auto;
+            gap: 12px;
         }
         .announce-item {
-            color: #E2E8F0;
+            color: #FFFFFF;
             text-decoration: none;
-            font-size: 0.95rem;
-            padding: 8px 12px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
-            transition: all 0.2s;
-            display: block;
-            border-left: 3px solid #FFB03A;
-            line-height: 1.4;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.08); /* พื้นหลังโปร่งแสง */
+            backdrop-filter: blur(8px); /* เอฟเฟกต์กระจกฝ้า */
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .announce-item:hover {
-            background: rgba(255, 176, 58, 0.15);
-            transform: translateX(5px);
-            color: #FFFFFF;
+            background: rgba(255, 176, 58, 0.2);
+            border-color: #FFB03A;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        /* ไอคอน NEW!! */
+        .new-tag {
+            color: #FF4B4B;
+            font-weight: 800;
+            font-size: 0.75rem;
+            margin-left: 10px;
+            background: rgba(255, 75, 75, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            animation: blink 1.5s infinite;
+            white-space: nowrap;
         }
 
-        /* เครดิต */
         .developer-credit { position: absolute; bottom: 20px; right: 25px; font-family: 'Sarabun', sans-serif; font-size: 1.1rem; color: rgba(255,255,255,0.4); user-select: none; }
 
         @media (max-width: 1024px) {
             .main-wrapper { flex-direction: column; gap: 40px; padding: 40px 20px; margin-bottom: 80px; }
             .vertical-divider { width: 80%; height: 2px; min-height: auto; }
             .right-side-container { align-items: center; text-align: center; }
-            .contact-box { display: flex; flex-direction: column; align-items: center; }
-            .announcement-container { position: relative; left: 0; bottom: 0; width: 100%; max-width: 350px; margin: 20px auto; }
+            .announcement-wrapper { position: relative; left: 0; bottom: 0; margin: 20px auto; padding: 0 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="main-wrapper">
+        <!-- ฝั่งซ้ายเมนูหลัก -->
         <div class="content-group-left">
             <div class="warehouse-roof-container"><div class="warehouse-roof"></div></div>
             <div class="main-title">ระบบพัสดุภายในหน่วย</div>
@@ -172,6 +163,7 @@
 
         <div class="vertical-divider"></div>
 
+        <!-- ฝั่งขวาข้อมูลติดต่อ -->
         <div class="right-side-container">
             <div class="logo-right">
                 <img src="https://drive.google.com/thumbnail?id=1WXw920em0NyiUIofpUZcAoV80yc_sge8&sz=w500" alt="Logo">
@@ -192,20 +184,21 @@
         </div>
     </div>
 
-    <div class="announcement-container">
+    <!-- ส่วนประชาสัมพันธ์แบบข้อความลอยตัว -->
+    <div class="announcement-wrapper">
         <div class="announcement-header">
-            <i class="fa-solid fa-bullhorn"></i> ประชาสัมพันธ์ล่าสุด
+            <i class="fa-solid fa-bullhorn"></i> ล่าสุด
         </div>
         <div id="announce-list">
-            <div style="color: #64748b; font-size: 0.85rem;">กำลังโหลดข้อมูล...</div>
+            <!-- ข้อมูลจะถูกโหลดตรงนี้ -->
         </div>
     </div>
 
     <div class="developer-credit">จัดทำโดย จ.ท.นิรันดร์ ศรีนาม</div>
 
     <script>
-        // 🔗 วางลิงก์ Web App (ที่ลงท้ายด้วย /exec) ของคุณที่นี่
-        const API_URL = "https://script.google.com/macros/s/AKfycbxvzrm83iqAPP8PcoxubPQpLksI0U2Tdw5b3qZ2aVM5Iuod16XlRlNZP6Sv_1oXn884/exec"; 
+        // ใส่ลิงก์ Web App (Google Apps Script) ของคุณที่นี่
+        const API_URL = "https://script.google.com/macros/s/AKfycbw5D4UbfA_ogTmp0umpjZneC3shyeiXYxcOwqgswhjtgUFuH-lioohWS6G1bqf77-_5/exec"; 
 
         async function loadAnnouncements() {
             const list = document.getElementById('announce-list');
@@ -214,27 +207,31 @@
                 const data = await response.json();
 
                 if (!data || data.length === 0) {
-                    list.innerHTML = '<div style="color: #64748b; font-size: 0.85rem;">ไม่มีประกาศในขณะนี้</div>';
+                    list.innerHTML = '<div style="color: rgba(255,255,255,0.4); font-size: 0.9rem;">ไม่มีข่าวสารใหม่</div>';
                     return;
                 }
 
-                list.innerHTML = ''; // ล้างข้อความกำลังโหลด
+                list.innerHTML = '';
                 data.forEach(item => {
                     const a = document.createElement('a');
                     a.className = 'announce-item';
                     a.href = item.link || '#';
-                    a.target = '_blank'; // 🌟 เงื่อนไข: ให้เด้งขึ้นลิงก์ใหม่
-                    a.innerHTML = item.title;
+                    a.target = '_blank';
+                    
+                    // ใส่ข้อความ และไอคอน NEW!! ต่อท้าย
+                    a.innerHTML = `
+                        <span>${item.title}</span>
+                        <span class="new-tag">NEW!!</span>
+                    `;
                     list.appendChild(a);
                 });
 
             } catch (err) {
                 console.error("Fetch Error:", err);
-                list.innerHTML = '<div style="color: #ef4444; font-size: 0.85rem;">ไม่สามารถเชื่อมต่อข้อมูลได้</div>';
+                list.innerHTML = '<div style="color: #ef4444; font-size: 0.85rem;">Failed to fetch announcements</div>';
             }
         }
 
-        // เรียกใช้งานเมื่อโหลดหน้าเว็บ
         window.onload = loadAnnouncements;
     </script>
 </body>
