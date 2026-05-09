@@ -56,7 +56,9 @@
         .menu-link img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: filter 0.2s ease; }
         .menu-link:hover { transform: translateY(-4px); box-shadow: 0 4px 0 #000, 0 6px 12px rgba(0, 0, 0, 0.4); }
         .menu-link:active { transform: translateY(0px); box-shadow: 0 1px 0 #000, 0 3px 8px rgba(0, 0, 0, 0.3); }
-        .menu-link.menu-2 { cursor: not-allowed; filter: grayscale(50%) opacity(0.7); }
+        
+        /* แก้ไขส่วน menu-2: ปลดล็อค grayscale และ opacity */
+        .menu-link.menu-2 { cursor: pointer; filter: none; opacity: 1; }
 
         .vertical-divider { width: 2px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent); align-self: stretch; min-height: 300px; animation: growVertical 1s ease-in-out forwards; }
 
@@ -149,12 +151,17 @@
             <div class="sub-title"><i class="fa-solid fa-screwdriver-wrench"></i> สายงานช่างโยธา</div>
             
             <div class="menu-dashboard-container">
+                <!-- เมนู 1 -->
                 <a href="https://script.google.com/macros/s/AKfycbzZtL6RpDAPosNvF3LUunHRiviu5Xz9Snx9TbL0lP5KwJRlzoZocWOIOKLLoMXcCmpd/exec" target="_blank" class="menu-link">
                     <img src="https://drive.google.com/thumbnail?id=1LA2glst0bkn812cw4OekgVktj1fqRber&sz=w500" alt="Supply Portal">
                 </a>
-                <a href="#" class="menu-link menu-2" onclick="alert('ระบบกำลังอยู่ระหว่างการพัฒนา'); return false;">
+                
+                <!-- เมนู 2: แก้ไขลิงก์และปลดล็อกเรียบร้อยแล้ว -->
+                <a href="https://script.google.com/macros/s/AKfycbw_egrirhfQeaTszpNubonaIpRWbVd565vgqN59IniJSIldq9c1TCIaThVo2NVhARgskA/exec" target="_blank" class="menu-link menu-2">
                     <img src="https://drive.google.com/thumbnail?id=1-xlKQFulxAlRSsxv4zXJ299OmbTnT3LX&sz=w500" alt="Maintenance">
                 </a>
+                
+                <!-- เมนู 3 -->
                 <a href="https://drive.google.com/drive/folders/1JlT1KbMISegO6GKaH64dR9UFXPojQeKE?usp=drive_link" target="_blank" class="menu-link">
                     <img src="https://drive.google.com/thumbnail?id=19mv7jLUXghHubjYMs0AF7Uqz_hzGw_3m&sz=w500" alt="Folders">
                 </a>
@@ -197,7 +204,7 @@
     <div class="developer-credit">จัดทำโดย จ.ท.นิรันดร์ ศรีนาม</div>
 
     <script>
-        // ใส่ลิงก์ Web App (Google Apps Script) ของคุณที่นี่
+        // ลิงก์ API เดิมของคุณ
         const API_URL = "https://script.google.com/macros/s/AKfycbxvzrm83iqAPP8PcoxubPQpLksI0U2Tdw5b3qZ2aVM5Iuod16XlRlNZP6Sv_1oXn884/exec"; 
 
         async function loadAnnouncements() {
