@@ -14,11 +14,12 @@
             background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start; 
             align-items: center;
             box-sizing: border-box;
             overflow-x: hidden;
             position: relative;
+            padding-left: 38px; /* ขยับหน้าเว็บไปทางขวา 1 cm */
         }
 
         /* 🎬 Animations */
@@ -27,8 +28,9 @@
         @keyframes growVertical { 0% { opacity: 0; transform: scaleY(0); } 100% { opacity: 1; transform: scaleY(1); } }
         @keyframes fadeInRoof { 0% { opacity: 0; transform: scaleX(0.5); } 100% { opacity: 1; transform: scaleX(1); } }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 🛠️ Main Layout (Desktop First) */
+        /* 🛠️ Main Layout (Desktop) */
         .main-wrapper {
             display: flex;
             flex-direction: row;
@@ -38,7 +40,7 @@
             max-width: 1300px; 
             box-sizing: border-box;
             gap: 60px; 
-            padding: 40px;
+            padding: 40px 0;
             margin-bottom: 60px;
         }
 
@@ -47,21 +49,19 @@
 
         .content-group-left { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1.3; min-width: 0; animation: slideFromRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        /* ปรับ Font Size ให้ยืดหยุ่นลดขนาดอัตโนมัติ */
         .main-title { font-family: 'Sarabun', sans-serif; font-size: clamp(2rem, 4vw, 3.8rem); font-weight: bold; color: #FFFFFF; line-height: 1.2; width: 100%; word-break: break-word; }
         .sub-title { font-family: 'Sarabun', sans-serif; font-size: clamp(1.3rem, 2.5vw, 2.2rem); color: #FFB03A; margin-top: 12px; display: flex; align-items: center; gap: 12px; }
 
-        .menu-dashboard-container { display: flex; flex-direction: row; gap: 25px; margin-top: 40px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .menu-link { display: inline-block; text-decoration: none; position: relative; border-radius: 50%; width: clamp(120px, 15vw, 160px); height: clamp(120px, 15vw, 160px); background: #111827; box-shadow: 0 4px 0 #000, 0 8px 0 #0F172A, 0 15px 20px rgba(0, 0, 0, 0.5); transform: translateY(-8px); transition: transform 0.2s ease, box-shadow 0.2s ease; overflow: hidden; flex-shrink: 0; }
+        /* เมนูย่อย 1 - 2 - 3 ขนาดลดลง 10% เพื่อความกระชับ */
+        .menu-dashboard-container { display: flex; flex-direction: row; gap: 22px; margin-top: 35px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .menu-link { display: inline-block; text-decoration: none; position: relative; border-radius: 50%; width: clamp(108px, 13.5vw, 144px); height: clamp(108px, 13.5vw, 144px); background: #111827; box-shadow: 0 4px 0 #000, 0 8px 0 #0F172A, 0 12px 18px rgba(0, 0, 0, 0.5); transform: translateY(-8px); transition: transform 0.2s ease, box-shadow 0.2s ease; overflow: hidden; flex-shrink: 0; }
         .menu-link img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: filter 0.2s ease; }
         .menu-link:hover { transform: translateY(-4px); box-shadow: 0 4px 0 #000, 0 6px 12px rgba(0, 0, 0, 0.4); }
         .menu-link:active { transform: translateY(0px); box-shadow: 0 1px 0 #000, 0 3px 8px rgba(0, 0, 0, 0.3); }
-        
-        .menu-link.menu-2 { cursor: pointer; filter: none; opacity: 1; }
 
         .vertical-divider { width: 2px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent); align-self: stretch; min-height: 300px; animation: growVertical 1s ease-in-out forwards; }
 
-        .right-side-container { display: flex; flex-direction: column; align-items: flex-start; flex: 1; min-width: 300px; animation: slideFromBottom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; box-sizing: border-box; }
+        .right-side-container { position: relative; display: flex; flex-direction: column; align-items: flex-start; flex: 1; min-width: 300px; animation: slideFromBottom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; box-sizing: border-box; }
         .logo-right img { width: clamp(160px, 20vw, 220px); height: auto; margin-bottom: 20px; display: block; }
         .contact-box { font-family: 'Sarabun', sans-serif; color: #FFFFFF; width: 100%; }
         .contact-title { font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: bold; color: #FFB03A; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
@@ -70,23 +70,88 @@
         .line-join-box { margin-top: 15px; }
         .line-qr-image { width: 90px; height: 90px; border-radius: 10px; background: white; padding: 5px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-        /* 📣 ส่วนประชาสัมพันธ์ลอยตัวแบบ UI แอปพลิเคชัน */
+        /* 📍 ระบบเมนูลอยฝั่งขวา "ระบบต่างๆ" */
+        .right-menu-dropdown {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 100;
+            font-family: 'Sarabun', sans-serif;
+        }
+        .dropdown-trigger-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 176, 58, 0.4);
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .dropdown-trigger-btn i.fa-bars { color: #FFB03A; }
+        .dropdown-trigger-btn:hover {
+            background: rgba(255, 176, 58, 0.15);
+            border-color: #FFB03A;
+        }
+        
+        .dropdown-content-menu {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 176, 58, 0.3);
+            width: 220px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            overflow: hidden;
+            animation: fadeInDropdown 0.2s ease forwards;
+        }
+        .right-menu-dropdown.active .dropdown-content-menu {
+            display: block;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-item i { color: #FFB03A; width: 16px; text-align: center; }
+        .dropdown-item:hover {
+            background: rgba(255, 176, 58, 0.2);
+            color: #FFB03A;
+        }
+
+        /* 📣 ส่วนประชาสัมพันธ์ลอยตัว (ซ้ายล่าง) */
         .announcement-wrapper {
             position: fixed;
             bottom: 30px;
-            left: 30px;
-            z-index: 999;
+            left: 38px; 
+            z-index: 99;
             font-family: 'Sarabun', sans-serif;
-            width: 360px;
-            max-width: calc(100% - 60px); /* ป้องกันการล้นขอบจอทุกขนาดอุปกรณ์ */
+            width: 350px;
+            max-width: calc(100% - 60px);
             box-sizing: border-box;
         }
         .announcement-header {
             color: #FFB03A;
-            font-size: 0.9rem;
+            font-size: 0.85rem; 
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -95,123 +160,97 @@
         #announce-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-height: 240px; /* จำกัดความสูงหากมีประกาศเยอะเกินไป */
+            gap: 10px;
+            max-height: 240px;
             overflow-y: auto;
             padding-right: 4px;
         }
-        /* ปรับแต่งความสวยงามของแถบเลื่อน (Scrollbar) ของกล่องประกาศ */
         #announce-list::-webkit-scrollbar { width: 4px; }
         #announce-list::-webkit-scrollbar-thumb { background: rgba(255, 176, 58, 0.3); border-radius: 4px; }
 
         .announce-item {
             color: #FFFFFF;
             text-decoration: none;
-            font-size: 1rem;
-            padding: 12px 16px;
+            font-size: 0.75rem; 
+            padding: 8px 12px; 
             background: rgba(15, 23, 42, 0.6); 
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-            gap: 10px;
+            gap: 8px;
         }
-        .announce-item span:first-child {
-            flex: 1;
-            line-height: 1.4;
-        }
-        .announce-item:hover {
-            background: rgba(255, 176, 58, 0.15);
-            border-color: rgba(255, 176, 58, 0.5);
-            transform: translateY(-3px);
-        }
+        .announce-item span:first-child { flex: 1; line-height: 1.4; }
+        .announce-item:hover { background: rgba(255, 176, 58, 0.15); border-color: rgba(255, 176, 58, 0.5); transform: translateY(-3px); }
+        
         .new-tag {
-            color: #FF4B4B;
-            font-weight: 800;
-            font-size: 0.7rem;
-            background: rgba(255, 75, 75, 0.15);
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 75, 75, 0.3);
-            animation: blink 1.5s infinite;
-            white-space: nowrap;
-            display: inline-block;
+            color: #FF4B4B; font-weight: 800; font-size: 0.6rem; background: rgba(255, 75, 75, 0.15);
+            padding: 1px 4px; border-radius: 3px; border: 1px solid rgba(255, 75, 75, 0.3);
+            animation: blink 1.5s infinite; white-space: nowrap; display: inline-block;
         }
 
         .developer-credit { position: absolute; bottom: 20px; right: 25px; font-family: 'Sarabun', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.3); user-select: none; }
 
-        /* 📱 ปรับหน้าตาโครงสร้างเมื่อใช้งานบน Mobile (สมาร์ตโฟน/แท็บเล็ต) */
+        /* 📱 Mobile Customization */
         @media (max-width: 1024px) {
-            body {
-                padding: 20px 10px;
-                align-items: flex-start; /* ให้สามารถ Scroll แนวนอน/แนวตั้งได้เหมาะสม */
+            body { 
+                padding: 20px 15px; 
+                align-items: flex-start; 
+                justify-content: center;
             }
             .main-wrapper { 
                 flex-direction: column; 
                 gap: 40px; 
-                padding: 20px 15px; 
-                margin-bottom: 340px; /* เพิ่มพื้นที่ด้านล่างเพื่อให้ไม่ทับกับกล่องประกาศลอย */
+                padding: 20px 0; 
+                margin-bottom: 320px; 
                 align-items: center;
                 text-align: center;
             }
             .vertical-divider { 
-                width: 60%; 
-                height: 1px; 
-                min-height: auto; 
+                width: 60%; height: 1px; min-height: auto; 
                 background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
             }
-            .right-side-container { 
-                align-items: center; 
-                text-align: center;
-                min-width: 100%;
+            .right-side-container { align-items: center; text-align: center; min-width: 100%; padding-top: 50px; }
+            .contact-box { display: flex; flex-direction: column; align-items: center; }
+            
+            .right-menu-dropdown {
+                top: -10px;
+                right: 50%;
+                transform: translateX(50%);
             }
-            .contact-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            /* จัดตำแหน่งประกาศให้อยู่ด้านล่างสุดของหน้าจอมือถือแบบแถบควบคุม */
-            .announcement-wrapper { 
-                position: fixed; 
-                left: 15px; 
-                bottom: 20px; 
-                width: calc(100% - 30px);
-                max-width: none;
-            }
-            .developer-credit {
-                position: relative;
-                bottom: 0;
-                right: 0;
-                margin-top: 20px;
-                margin-bottom: 20px;
-                text-align: center;
-                width: 100%;
-            }
+            .dropdown-content-menu { right: 50%; transform: translateX(50%); }
+
+            .announcement-wrapper { position: fixed; left: 15px; bottom: 20px; width: calc(100% - 30px); max-width: none; }
+            .developer-credit { position: relative; bottom: 0; right: 0; margin-top: 20px; margin-bottom: 20px; text-align: center; width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <div class="main-wrapper">
+        <!-- ฝั่งซ้ายเมนูหลัก -->
         <div class="content-group-left">
             <div class="warehouse-roof-container"><div class="warehouse-roof"></div></div>
             <div class="main-title">ระบบพัสดุภายในหน่วย</div>
             <div class="sub-title"><i class="fa-solid fa-screwdriver-wrench"></i> สายงานช่างโยธา</div>
             
             <div class="menu-dashboard-container">
+                <!-- เมนู 1 -->
                 <a href="https://script.google.com/macros/s/AKfycbzZtL6RpDAPosNvF3LUunHRiviu5Xz9Snx9TbL0lP5KwJRlzoZocWOIOKLLoMXcCmpd/exec" target="_blank" class="menu-link">
                     <img src="https://drive.google.com/thumbnail?id=1LA2glst0bkn812cw4OekgVktj1fqRber&sz=w500" alt="Supply Portal">
                 </a>
                 
-                <a href="https://script.google.com/macros/s/AKfycbw_egrirhfQeaTszpNubonaIpRWbVd565vgqN59IniJSIldq9c1TCIaThVo2NVhARgskA/exec" target="_blank" class="menu-link menu-2">
+                <!-- เมนู 2 -->
+                <a href="https://script.google.com/macros/s/AKfycbw_egrirhfQeaTszpNubonaIpRWbVd565vgqN59IniJSIldq9c1TCIaThVo2NVhARgskA/exec" target="_blank" class="menu-link">
                     <img src="https://drive.google.com/thumbnail?id=1-xlKQFulxAlRSsxv4zXJ299OmbTnT3LX&sz=w500" alt="Maintenance">
                 </a>
                 
+                <!-- เมนู 3 -->
                 <a href="https://drive.google.com/drive/folders/1JlT1KbMISegO6GKaH64dR9UFXPojQeKE?usp=drive_link" target="_blank" class="menu-link">
                     <img src="https://drive.google.com/thumbnail?id=19mv7jLUXghHubjYMs0AF7Uqz_hzGw_3m&sz=w500" alt="Folders">
                 </a>
@@ -220,7 +259,23 @@
 
         <div class="vertical-divider"></div>
 
+        <!-- ฝั่งขวาข้อมูลติดต่อ + ปุ่มเมนูใหม่ -->
         <div class="right-side-container">
+            
+            <!-- 📍 ระบบเมนูลอย "ระบบต่างๆ" -->
+            <div class="right-menu-dropdown" id="customDropdown">
+                <button class="dropdown-trigger-btn" onclick="toggleDropdown(event)">
+                    <i class="fa-solid fa-bars"></i>
+                    <span>ระบบต่างๆ</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size:0.7rem; opacity:0.7;"></i>
+                </button>
+                <div class="dropdown-content-menu">
+                    <a href="https://script.google.com/macros/s/AKfycbys6H_re_qaLLfHzhlufJsMFMjpr3-Ywk9IQIg6xTsmjobpHYBdRcKkpvkf697JHEoFWg/exec" target="_blank" class="dropdown-item">
+                        <i class="fa-solid fa-boxes-stacked"></i> ระบบทะเบียนคุมสินทรัพย์
+                    </a>
+                </div>
+            </div>
+
             <div class="logo-right">
                 <img src="https://drive.google.com/thumbnail?id=1WXw920em0NyiUIofpUZcAoV80yc_sge8&sz=w500" alt="Logo">
             </div>
@@ -240,18 +295,28 @@
         </div>
     </div>
 
+    <!-- ส่วนประชาสัมพันธ์แบบข้อความลอยตัว -->
     <div class="announcement-wrapper">
         <div class="announcement-header">
             <i class="fa-solid fa-bullhorn"></i> ล่าสุด
         </div>
         <div id="announce-list">
-            </div>
+            <!-- ข้อมูลจะถูกโหลดตรงนี้ -->
+        </div>
     </div>
 
     <div class="developer-credit">จัดทำโดย จ.ท.นิรันดร์ ศรีนาม</div>
 
     <script>
-        // คงฟังก์ชันการเรียกใช้งาน API ไว้ครบถ้วนตามเดิม
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById('customDropdown').classList.toggle('active');
+        }
+
+        window.addEventListener('click', function() {
+            document.getElementById('customDropdown').classList.remove('active');
+        });
+
         const API_URL = "https://script.google.com/macros/s/AKfycbxvzrm83iqAPP8PcoxubPQpLksI0U2Tdw5b3qZ2aVM5Iuod16XlRlNZP6Sv_1oXn884/exec"; 
 
         async function loadAnnouncements() {
@@ -261,7 +326,7 @@
                 const data = await response.json();
 
                 if (!data || data.length === 0) {
-                    list.innerHTML = '<div style="color: rgba(255,255,255,0.4); font-size: 0.9rem;">ไม่มีข่าวสารใหม่</div>';
+                    list.innerHTML = '<div style="color: rgba(255,255,255,0.4); font-size: 0.75rem;">ไม่มีข่าวสารใหม่</div>';
                     return;
                 }
 
@@ -281,7 +346,8 @@
 
             } catch (err) {
                 console.error("Fetch Error:", err);
-                list.innerHTML = '<div style="color: #ef4444; font-size: 0.85rem;">Failed to fetch announcements</div>';
+                // 🛠️ ปล่อยให้แจ้งเตือนสีแดงเหมือนเดิม เมื่อเชื่อมต่อ API ขัดข้องครับ
+                list.innerHTML = '<div style="color: #ef4444; font-size: 0.75rem; font-weight: bold;">Failed to fetch announcements</div>';
             }
         }
 
