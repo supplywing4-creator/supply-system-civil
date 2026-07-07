@@ -2,12 +2,23 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ระบบพัสดุภายในหน่วย สายงานช่างโยธา - พอร์ทัลรวมลิงก์ระบบเบิกจ่ายพัสดุ ระบบซ่อมบำรุง และเอกสารที่เกี่ยวข้อง">
     <title>ระบบพัสดุภายในหน่วย - สายงานช่างโยธา</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* 🎨 Theme & Base Styles */
-        html { font-size: 16px; width: 100%; height: 100%; }
+        /* =========================================================
+           🎨 1. THEME & BASE STYLES
+           ========================================================= */
+        html { 
+            font-size: 16px; 
+            width: 100%; 
+            height: 100%; 
+        }
         body {
             margin: 0;
             padding: 0; 
@@ -21,15 +32,39 @@
             position: relative;
         }
 
-        /* 🎬 Animations */
-        @keyframes slideFromRight { 0% { opacity: 0; transform: translateX(30px); } 100% { opacity: 1; transform: translateX(0); } }
-        @keyframes slideFromBottom { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes growVertical { 0% { opacity: 0; transform: scaleY(0); } 100% { opacity: 1; transform: scaleY(1); } }
-        @keyframes fadeInRoof { 0% { opacity: 0; transform: scaleX(0.5); } 100% { opacity: 1; transform: scaleX(1); } }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        /* =========================================================
+           🎬 2. ANIMATIONS
+           ========================================================= */
+        @keyframes slideFromRight { 
+            0% { opacity: 0; transform: translateX(30px); } 
+            100% { opacity: 1; transform: translateX(0); } 
+        }
+        @keyframes slideFromBottom { 
+            0% { opacity: 0; transform: translateY(30px); } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes growVertical { 
+            0% { opacity: 0; transform: scaleY(0); } 
+            100% { opacity: 1; transform: scaleY(1); } 
+        }
+        @keyframes fadeInRoof { 
+            0% { opacity: 0; transform: scaleX(0.5); } 
+            100% { opacity: 1; transform: scaleX(1); } 
+        }
+        @keyframes blink { 
+            0% { opacity: 1; } 
+            50% { opacity: 0.3; } 
+            100% { opacity: 1; } 
+        }
+        @keyframes fadeInDropdown { 
+            from { opacity: 0; transform: translateY(-10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-        /* 📦 Container สำหรับ Auto-Scale บนคอมพิวเตอร์ */
+        /* =========================================================
+           🖥️ 3. DESKTOP LAYOUT & COMPONENTS
+           ========================================================= */
+        /* Container & Wrapper */
         .scale-container {
             width: 100%;
             display: flex;
@@ -40,8 +75,6 @@
             padding: 20px;
             box-sizing: border-box;
         }
-
-        /* 🛠️ Main Layout (3 Columns Setup - Desktop) */
         .main-wrapper {
             display: flex;
             flex-direction: row;
@@ -54,10 +87,7 @@
             padding: 60px 20px;
         }
 
-        .warehouse-roof-container { width: 100%; display: flex; justify-content: center; margin-bottom: 2px; animation: fadeInRoof 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .warehouse-roof { width: 100px; height: 14px; background: #FFB03A; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
-
-        /* [ข้อมูลชุดที่ 1] ฝั่งซ้าย เมนูหลัก */
+        /* [ข้อมูลชุดที่ 1] เมนูหลัก */
         .content-group-left { 
             display: flex; 
             flex-direction: column; 
@@ -69,33 +99,141 @@
             margin-top: 15px;
             transform-origin: top center;
         }
-        
-        .main-title { font-family: 'Sarabun', sans-serif; font-size: clamp(2rem, 3.8vw, 3.5rem); font-weight: bold; color: #FFFFFF; line-height: 1.2; width: 100%; word-break: break-word; }
-        .sub-title { font-family: 'Sarabun', sans-serif; font-size: clamp(1.3rem, 2.2vw, 2rem); color: #FFB03A; margin-top: 12px; display: flex; align-items: center; gap: 12px; }
+        .warehouse-roof-container { 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            margin-bottom: 2px; 
+            animation: fadeInRoof 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+        .warehouse-roof { 
+            width: 100px; 
+            height: 14px; 
+            background: #FFB03A; 
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); 
+        }
+        .main-title { 
+            font-family: 'Sarabun', sans-serif; 
+            font-size: clamp(2rem, 3.8vw, 3.5rem); 
+            font-weight: bold; 
+            color: #FFFFFF; 
+            line-height: 1.2; 
+            width: 100%; 
+            word-break: break-word; 
+        }
+        .sub-title { 
+            font-family: 'Sarabun', sans-serif; 
+            font-size: clamp(1.3rem, 2.2vw, 2rem); 
+            color: #FFB03A; 
+            margin-top: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .menu-dashboard-container { 
+            display: flex; 
+            flex-direction: row; 
+            gap: 22px; 
+            margin-top: 35px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            width: 100%; 
+        }
+        .menu-link { 
+            display: inline-block; 
+            text-decoration: none; 
+            position: relative; 
+            border-radius: 50%; 
+            width: clamp(108px, 12vw, 144px); 
+            height: clamp(108px, 12vw, 144px); 
+            background: #111827; 
+            box-shadow: 0 4px 0 #000, 0 8px 0 #0F172A, 0 12px 18px rgba(0, 0, 0, 0.5); 
+            transform: translateY(-8px); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
+            overflow: hidden; 
+            flex-shrink: 0; 
+        }
+        .menu-link img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            border-radius: 50%; 
+            transition: filter 0.2s ease; 
+            background: #1E293B;
+        }
+        .menu-link img.img-error {
+            object-fit: contain;
+            padding: 24px;
+            box-sizing: border-box;
+            filter: invert(0.6) opacity(0.5);
+        }
+        .menu-link:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 4px 0 #000, 0 6px 12px rgba(0, 0, 0, 0.4); 
+        }
+        .menu-link:active { 
+            transform: translateY(0px); 
+            box-shadow: 0 1px 0 #000, 0 3px 8px rgba(0, 0, 0, 0.3); 
+        }
 
-        .menu-dashboard-container { display: flex; flex-direction: row; gap: 22px; margin-top: 35px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .menu-link { display: inline-block; text-decoration: none; position: relative; border-radius: 50%; width: clamp(108px, 12vw, 144px); height: clamp(108px, 12vw, 144px); background: #111827; box-shadow: 0 4px 0 #000, 0 8px 0 #0F172A, 0 12px 18px rgba(0, 0, 0, 0.5); transform: translateY(-8px); transition: transform 0.2s ease, box-shadow 0.2s ease; overflow: hidden; flex-shrink: 0; }
-        .menu-link img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: filter 0.2s ease; }
-        .menu-link:hover { transform: translateY(-4px); box-shadow: 0 4px 0 #000, 0 6px 12px rgba(0, 0, 0, 0.4); }
-        .menu-link:active { transform: translateY(0px); box-shadow: 0 1px 0 #000, 0 3px 8px rgba(0, 0, 0, 0.3); }
+        /* [ข้อมูลชุดที่ 2] ข้อมูลติดต่อ */
+        .right-side-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
+            flex: 1; 
+            min-width: 300px; 
+            animation: slideFromBottom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            box-sizing: border-box; 
+        }
+        .logo-right img { 
+            width: clamp(150px, 18vw, 200px); 
+            height: auto; 
+            margin-bottom: 25px; 
+            display: block; 
+        }
+        .contact-box { 
+            font-family: 'Sarabun', sans-serif; 
+            color: #FFFFFF; 
+            width: 100%; 
+            text-align: left; 
+            padding: 0 10px; 
+            box-sizing: border-box; 
+        }
+        .contact-title { 
+            font-size: clamp(1.1rem, 1.8vw, 1.5rem); 
+            font-weight: bold; 
+            color: #FFB03A; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .contact-item { 
+            font-size: clamp(0.95rem, 1.4vw, 1.2rem); 
+            line-height: 1.6; 
+            margin-bottom: 8px; 
+            word-break: break-word; 
+        }
+        .contact-item i { 
+            color: #38BDF8; 
+            margin-right: 8px; 
+        }
+        .line-join-box { 
+            margin-top: 15px; 
+        }
+        .line-qr-image { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 10px; 
+            background: white; 
+            padding: 5px; 
+            box-sizing: border-box; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }
 
-        /* เส้นแบ่งแนวตั้ง (แสดงเฉพาะบนคอมฯ) */
-        .vertical-divider { width: 2px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15) 10%, rgba(255, 255, 255, 0.15) 90%, transparent); align-self: stretch; min-height: 380px; animation: growVertical 1s ease-in-out forwards; flex-shrink: 0; }
-
-        /* ➖ เส้นแบ่งแนวนอน (ซ่อนไว้เมื่ออยู่บนหน้าจอคอมฯ) */
-        .horizontal-divider { display: none; }
-
-        /* [ข้อมูลชุดที่ 2] ตรงกลาง ข้อมูลติดต่อ */
-        .right-side-container { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; min-width: 300px; animation: slideFromBottom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; box-sizing: border-box; }
-        .logo-right img { width: clamp(150px, 18vw, 200px); height: auto; margin-bottom: 25px; display: block; }
-        .contact-box { font-family: 'Sarabun', sans-serif; color: #FFFFFF; width: 100%; text-align: left; padding: 0 10px; box-sizing: border-box; }
-        .contact-title { font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: bold; color: #FFB03A; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .contact-item { font-size: clamp(0.95rem, 1.4vw, 1.2rem); line-height: 1.6; margin-bottom: 8px; word-break: break-word; }
-        .contact-item i { color: #38BDF8; margin-right: 8px; }
-        .line-join-box { margin-top: 15px; }
-        .line-qr-image { width: 90px; height: 90px; border-radius: 10px; background: white; padding: 5px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-        /* [ข้อมูลชุดที่ 3] ฝั่งขวาสุด โซนปุ่มระบบขึ้นบัญชีคุม */
+        /* [ข้อมูลชุดที่ 3] ระบบขึ้นบัญชีคุม */
         .system-menu-aside {
             flex: 0.8;
             display: flex;
@@ -106,14 +244,12 @@
             animation: slideFromBottom 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             padding-top: 10px;
         }
-
         .right-menu-dropdown {
             position: relative;
             font-family: 'Sarabun', sans-serif;
             width: 100%;
             max-width: 240px;
         }
-        
         .dropdown-trigger-btn {
             display: flex;
             align-items: center;
@@ -134,15 +270,19 @@
             width: 100%;
             box-sizing: border-box;
         }
-        .dropdown-trigger-btn i.fa-bars { color: #FFB03A; font-size: 1.1rem; }
+        .dropdown-trigger-btn i.fa-bars { 
+            color: #FFB03A; 
+            font-size: 1.1rem; 
+        }
         .dropdown-trigger-btn:hover {
             background: #FFB03A;
             color: #0F172A;
             box-shadow: 0 6px 24px rgba(255, 176, 58, 0.3);
             transform: translateY(-2px);
         }
-        .dropdown-trigger-btn:hover i.fa-bars { color: #0F172A; }
-        
+        .dropdown-trigger-btn:hover i.fa-bars { 
+            color: #0F172A; 
+        }
         .dropdown-content-menu {
             display: none;
             position: absolute;
@@ -159,7 +299,9 @@
             animation: fadeInDropdown 0.2s ease forwards;
             z-index: 110;
         }
-        .right-menu-dropdown.active .dropdown-content-menu { display: block; }
+        .right-menu-dropdown.active .dropdown-content-menu { 
+            display: block; 
+        }
         .dropdown-item {
             display: flex;
             align-items: center;
@@ -170,10 +312,30 @@
             font-size: 0.95rem;
             transition: background 0.2s, color 0.2s;
         }
-        .dropdown-item i { color: #FFB03A; width: 16px; text-align: center; }
-        .dropdown-item:hover { background: rgba(255, 176, 58, 0.15); color: #FFB03A; }
+        .dropdown-item i { 
+            color: #FFB03A; 
+            width: 16px; 
+            text-align: center; 
+        }
+        .dropdown-item:hover { 
+            background: rgba(255, 176, 58, 0.15); 
+            color: #FFB03A; 
+        }
 
-        /* 📣 ส่วนประชาสัมพันธ์ลอยตัว */
+        /* เส้นแบ่งโครงสร้าง (Desktop) */
+        .vertical-divider { 
+            width: 2px; 
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15) 10%, rgba(255, 255, 255, 0.15) 90%, transparent); 
+            align-self: stretch; 
+            min-height: 380px; 
+            animation: growVertical 1s ease-in-out forwards; 
+            flex-shrink: 0; 
+        }
+        .horizontal-divider { 
+            display: none; 
+        }
+
+        /* ส่วนประชาสัมพันธ์ (Desktop) */
         .announcement-wrapper {
             position: fixed;
             bottom: 30px;
@@ -186,33 +348,99 @@
             transition: all 0.3s ease;
         }
         .announcement-header {
-            color: #FFB03A; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; opacity: 0.8;
+            color: #FFB03A; 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 8px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            opacity: 0.8;
             cursor: default;
         }
-        .announcement-body { display: block; }
-        #announce-list { display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto; padding-right: 4px; }
-        #announce-list::-webkit-scrollbar { width: 4px; }
-        #announce-list::-webkit-scrollbar-thumb { background: rgba(255, 176, 58, 0.3); border-radius: 4px; }
-
+        .announcement-body { 
+            display: block; 
+        }
+        #announce-list { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            max-height: 180px; 
+            overflow-y: auto; 
+            padding-right: 4px; 
+        }
+        #announce-list::-webkit-scrollbar { 
+            width: 4px; 
+        }
+        #announce-list::-webkit-scrollbar-thumb { 
+            background: rgba(255, 176, 58, 0.3); 
+            border-radius: 4px; 
+        }
         .announce-item {
-            color: #FFFFFF; text-decoration: none; font-size: 0.75rem; padding: 8px 12px; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); gap: 8px;
+            color: #FFFFFF; 
+            text-decoration: none; 
+            font-size: 0.75rem; 
+            padding: 8px 12px; 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border-radius: 10px; 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
+            gap: 8px;
         }
-        .announce-item span:first-child { flex: 1; line-height: 1.4; }
-        .announce-item:hover { background: rgba(255, 176, 58, 0.15); border-color: rgba(255, 176, 58, 0.5); transform: translateY(-3px); }
-        
+        .announce-item span:first-child { 
+            flex: 1; 
+            line-height: 1.4; 
+        }
+        .announce-item:hover { 
+            background: rgba(255, 176, 58, 0.15); 
+            border-color: rgba(255, 176, 58, 0.5); 
+            transform: translateY(-3px); 
+        }
         .new-tag {
-            color: #FF4B4B; font-weight: 800; font-size: 0.6rem; background: rgba(255, 75, 75, 0.15); padding: 1px 4px; border-radius: 3px; border: 1px solid rgba(255, 75, 75, 0.3); animation: blink 1.5s infinite; white-space: nowrap; display: inline-block;
+            color: #FF4B4B; 
+            font-weight: 800; 
+            font-size: 0.6rem; 
+            background: rgba(255, 75, 75, 0.15); 
+            padding: 1px 4px; 
+            border-radius: 3px; 
+            border: 1px solid rgba(255, 75, 75, 0.3); 
+            animation: blink 1.5s infinite; 
+            white-space: nowrap; 
+            display: inline-block;
         }
 
-        .developer-credit { position: absolute; bottom: 20px; right: 25px; font-family: 'Sarabun', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.3); user-select: none; }
+        /* เครดิตผู้พัฒนา (Desktop) */
+        .developer-credit { 
+            position: absolute; 
+            bottom: 20px; 
+            right: 25px; 
+            font-family: 'Sarabun', sans-serif; 
+            font-size: 0.9rem; 
+            color: rgba(255,255,255,0.3); 
+            user-select: none; 
+        }
 
         /* =========================================================
-           📱 โซนควบคุมการแสดงผลบน "มือถือ" (Responsive & Reordering)
+           📱 4. MOBILE LAYOUT & RESPONSIVE (max-width: 1100px)
            ========================================================= */
         @media (max-width: 1100px) {
-            body { padding: 20px 16px; align-items: flex-start; justify-content: center; }
-            .scale-container { padding: 0; transform: none !important; width: 100%; } 
-            
+            body { 
+                padding: 20px 16px; 
+                align-items: flex-start; 
+                justify-content: center; 
+            }
+            .scale-container { 
+                padding: 0; 
+                transform: none !important; 
+                width: 100%; 
+            } 
             .main-wrapper { 
                 flex-direction: column; 
                 gap: 25px; 
@@ -223,48 +451,46 @@
                 width: 100%;
             }
             
-            .vertical-divider { display: none; } /* ซ่อนเส้นแนวตั้ง */
+            /* ซ่อนเส้นแนวตั้ง และจัดการเส้นแบ่งแนวนอนคั่นกลางเซกชัน */
+            .vertical-divider { 
+                display: none; 
+            } 
+            .horizontal-divider { 
+                display: block; 
+                width: 85%; 
+                max-width: 400px;
+                height: 1px; 
+                background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15) 20%, rgba(255, 255, 255, 0.15) 80%, transparent);
+                border: none;
+                margin: 10px 0;
+            }
 
-            /* 🔄 ปรับลำดับเรียงตัวเลขใหม่ เพื่อให้เส้นแนวนอนแทรกกลางเซกชันได้อย่างถูกต้อง */
+            /* การจัดลำดับ Flow ข้อมูลบนมือถือ (2 -> Line -> 1 -> Line -> 3 -> Credit) */
             .right-side-container { 
-                order: 1; /* ข้อมูลชุดที่ 2 อยู่บนสุด */
+                order: 1; 
                 width: 100%; 
                 min-width: unset; 
             }
             #m-divider-1 { 
-                display: block; 
-                order: 2; /* เส้นคั่นที่หนึ่ง อยู่ลำดับที่ 2 (คั่นระหว่างชุดที่ 2 กับ 1) */
-                width: 85%; 
-                max-width: 400px;
-                height: 1px; 
-                background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15) 20%, rgba(255, 255, 255, 0.15) 80%, transparent);
-                border: none;
-                margin: 10px 0;
+                order: 2; 
             }
             .content-group-left { 
-                order: 3; /* ข้อมูลชุดที่ 1 อยู่ลำดับที่ 3 */
+                order: 3; 
                 width: 100%; 
                 margin-top: 0;
             }
             #m-divider-2 { 
-                display: block; 
-                order: 4; /* เส้นคั่นที่สอง อยู่ลำดับที่ 4 (คั่นระหว่างชุดที่ 1 กับ 3) */
-                width: 85%; 
-                max-width: 400px;
-                height: 1px; 
-                background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15) 20%, rgba(255, 255, 255, 0.15) 80%, transparent);
-                border: none;
-                margin: 10px 0;
+                order: 4; 
             }
             .system-menu-aside { 
-                order: 5; /* ข้อมูลชุดที่ 3 อยู่ลำดับที่ 5 */
+                order: 5; 
                 width: 100%; 
                 min-width: unset; 
                 margin-top: 5px; 
                 padding-top: 0; 
             }
             .developer-credit { 
-                order: 6; /* เครดิตผู้พัฒนาอยู่ล่างสุดลำดับที่ 6 */
+                order: 6; 
                 position: relative; 
                 bottom: 0; 
                 right: 0; 
@@ -275,7 +501,7 @@
                 display: block;
             }
 
-            /* รายละเอียดปลีกย่อยบนมือถือ */
+            /* ปรับแต่งรายละเอียดฟอนต์และ UI บนมือถือ */
             .main-title { font-size: 1.7rem !important; }
             .sub-title { font-size: 1.2rem !important; justify-content: center; }
             .menu-dashboard-container { gap: 15px; }
@@ -283,7 +509,7 @@
             .contact-title { justify-content: center; }
             .right-menu-dropdown { max-width: 280px; margin: 0 auto; }
 
-            /* ป๊อปอัพประกาศข่าวสาร */
+            /* ฟังก์ชันปุ่มประกาศลอยตัวแบบยุบเป็นไอคอนบนมือถือ */
             .announcement-wrapper { 
                 position: fixed; 
                 left: auto;
@@ -316,6 +542,7 @@
             .announcement-header i { margin: 0; }
             .announcement-wrapper .announcement-body { display: none; }
 
+            /* สถานะเมื่อกดขยายหน้าต่างประกาศบนมือถือ */
             .announcement-wrapper.mobile-expanded {
                 left: 16px;
                 right: 16px;
@@ -358,13 +585,13 @@
                 
                 <div class="menu-dashboard-container">
                     <a href="https://script.google.com/macros/s/AKfycbzZtL6RpDAPosNvF3LUunHRiviu5Xz9Snx9TbL0lP5KwJRlzoZocWOIOKLLoMXcCmpd/exec" target="_blank" class="menu-link">
-                        <img src="https://drive.google.com/thumbnail?id=1LA2glst0bkn812cw4OekgVktj1fqRber&sz=w500" alt="Supply Portal">
+                        <img src="https://drive.google.com/thumbnail?id=1LA2glst0bkn812cw4OekgVktj1fqRber&sz=w500" alt="Supply Portal" onerror="this.onerror=null;this.classList.add('img-error');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22white%22%3E%3Cpath d=%22M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5%22 stroke=%22white%22 stroke-width=%221.5%22 fill=%22none%22/%3E%3C/svg%3E'">
                     </a>
                     <a href="https://script.google.com/macros/s/AKfycbw_egrirhfQeaTszpNubonaIpRWbVd565vgqN59IniJSIldq9c1TCIaThVo2NVhARgskA/exec" target="_blank" class="menu-link">
-                        <img src="https://drive.google.com/thumbnail?id=1-xlKQFulxAlRSsxv4zXJ299OmbTnT3LX&sz=w500" alt="Maintenance">
+                        <img src="https://drive.google.com/thumbnail?id=1-xlKQFulxAlRSsxv4zXJ299OmbTnT3LX&sz=w500" alt="Maintenance" onerror="this.onerror=null;this.classList.add('img-error');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22white%22%3E%3Cpath d=%22M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5%22 stroke=%22white%22 stroke-width=%221.5%22 fill=%22none%22/%3E%3C/svg%3E'">
                     </a>
                     <a href="https://drive.google.com/drive/folders/1JlT1KbMISegO6GKaH64dR9UFXPojQeKE?usp=drive_link" target="_blank" class="menu-link">
-                        <img src="https://drive.google.com/thumbnail?id=19mv7jLUXghHubjYMs0AF7Uqz_hzGw_3m&sz=w500" alt="Folders">
+                        <img src="https://drive.google.com/thumbnail?id=19mv7jLUXghHubjYMs0AF7Uqz_hzGw_3m&sz=w500" alt="Folders" onerror="this.onerror=null;this.classList.add('img-error');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22white%22%3E%3Cpath d=%22M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5%22 stroke=%22white%22 stroke-width=%221.5%22 fill=%22none%22/%3E%3C/svg%3E'">
                     </a>
                 </div>
             </div>
@@ -373,7 +600,7 @@
 
             <div class="right-side-container">
                 <div class="logo-right">
-                    <img src="https://drive.google.com/thumbnail?id=1WXw920em0NyiUIofpUZcAoV80yc_sge8&sz=w500" alt="Logo">
+                    <img src="https://drive.google.com/thumbnail?id=1WXw920em0NyiUIofpUZcAoV80yc_sge8&sz=w500" alt="Logo" onerror="this.style.display='none'">
                 </div>
                 <div class="contact-box">
                     <div class="contact-title"><i class="fa-solid fa-building-shield"></i> ติดต่อสอบถามข้อมูล</div>
@@ -384,7 +611,7 @@
                             <i class="fa-brands fa-line" style="color: #06C755; font-size: 1.2rem;"></i> เข้าร่วมกลุ่ม LINE สอบถามข้อมูล
                         </div>
                         <a href="https://line.me/R/ti/g/WxndXMcenn" target="_blank">
-                            <img src="https://drive.google.com/thumbnail?id=1EBIFiS2x2raYgwZJcXETraLvsRbPpPJZ&sz=w300" class="line-qr-image" alt="Line QR">
+                            <img src="https://drive.google.com/thumbnail?id=1EBIFiS2x2raYgwZJcXETraLvsRbPpPJZ&sz=w300" class="line-qr-image" alt="Line QR" onerror="this.style.display='none'">
                         </a>
                     </div>
                 </div>
@@ -403,12 +630,14 @@
                         <a href="https://script.google.com/macros/s/AKfycbys6H_re_qaLLfHzhlufJsMFMjpr3-Ywk9IQIg6xTsmjobpHYBdRcKkpvkf697JHEoFWg/exec" target="_blank" class="dropdown-item">
                             <i class="fa-solid fa-boxes-stacked"></i> ระบบทะเบียนคุมสินทรัพย์
                         </a>
+                        <a href="https://script.google.com/macros/s/AKfycbwGCwt9yq58kkg8SFKTKXml9iOk898H4E6npjJYE55uB-PgnOjPTo36bPkuyoLwtzkc/exec" target="_blank" class="dropdown-item">
+                            <i class="fa-solid fa-book-bookmark"></i> รูปแบบการขึ้นบัญชีคุม
+                        </a>
                     </div>
                 </div>
             </div>
 
             <hr class="horizontal-divider" id="m-divider-1">
-
             <hr class="horizontal-divider" id="m-divider-2">
 
             <div class="developer-credit">จัดทำโดย จ.ท.นิรันดร์ ศรีนาม</div>
@@ -426,11 +655,13 @@
     </div>
 
     <script>
+        // 1. ควบคุมเมนู Dropdown ระบบขึ้นบัญชีคุม
         function toggleDropdown(event) {
             event.stopPropagation();
             document.getElementById('customDropdown').classList.toggle('active');
         }
 
+        // 2. ควบคุมหน้าต่างประกาศข่าวสารบนหน้าจอมือถือ
         function toggleMobileAnnounce(event) {
             if (window.innerWidth <= 1100) {
                 event.stopPropagation();
@@ -439,6 +670,7 @@
             }
         }
 
+        // 3. ปิดอิลิเมนต์ต่างๆ เมื่อคลิกภายนอกพื้นที่เป้าหมาย
         window.addEventListener('click', function() {
             document.getElementById('customDropdown').classList.remove('active');
             if (window.innerWidth <= 1100) {
@@ -446,7 +678,7 @@
             }
         });
 
-        // 📐 ฟังก์ชันตรวจจับขนาดหน้าจอและปรับสเกล
+        // 4. คำนวณสเกลหน้าจอคอมพิวเตอร์และมือถือให้สัมพันธ์กันอัตโนมัติ
         function dynamicResponsiveScale() {
             const windowWidth = window.innerWidth;
             const desktopWrapper = document.getElementById('autoScaleWrapper');
@@ -464,7 +696,6 @@
             } 
             else {
                 desktopWrapper.style.transform = 'none'; 
-                
                 if (windowWidth < 380) {
                     let mobileScaleRatio = windowWidth / 380;
                     mobileAppGroup.style.transform = `scale(${mobileScaleRatio})`;
@@ -477,13 +708,16 @@
         window.addEventListener('resize', dynamicResponsiveScale);
         window.addEventListener('DOMContentLoaded', dynamicResponsiveScale);
 
-        // โหลดข้อมูลประกาศข่าวสารจาก API
+        // 5. โหลดข้อมูลประกาศข่าวสารจากสคริปต์หลังบ้าน (API)
         const API_URL = "https://script.google.com/macros/s/AKfycbxvzrm83iqAPP8PcoxubPQpLksI0U2Tdw5b3qZ2aVM5Iuod16XlRlNZP6Sv_1oXn884/exec"; 
 
         async function loadAnnouncements() {
             const list = document.getElementById('announce-list');
             try {
                 const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok (status: ${response.status})`);
+                }
                 const data = await response.json();
 
                 if (!data || data.length === 0) {
@@ -508,6 +742,7 @@
             }
         }
 
+        // เริ่มต้นการเรียกทำงานเมื่อโหลดหน้าเว็บเสร็จสมบูรณ์
         window.onload = function() {
             dynamicResponsiveScale();
             loadAnnouncements();
